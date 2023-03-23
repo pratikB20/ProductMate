@@ -1,0 +1,128 @@
+﻿@{
+    //Added for excluding the layout particularly for login page.
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/lib/uikit/css/uikit.min.css" />
+</head>
+<body>
+    <div class="uk-section uk-section-muted uk-flex uk-flex-middle" uk-height-viewport>
+        <div class="uk-width-1-1">
+            <div class="uk-container">
+                <div class="uk-grid-margin uk-grid uk-grid-stack" uk-grid>
+                    <div class="uk-width-1-1@m">
+                        <div class="uk-margin uk-width-large uk-margin-auto uk-card uk-card-default uk-card-body uk-box-shadow-large">
+                            <h4 class="uk-card-title uk-text-center"><img src="~/Images/Logo4_MidFitSize.JPG" /></h4>
+                            <form>
+                                <div class="uk-margin">
+                                    <div class="uk-inline uk-width-1-1">
+                                        <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                                        <input class="uk-input" placeholder="Username" type="text" id="txtUserame" />
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <div class="uk-inline uk-width-1-1">
+                                        <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                                        <input class="uk-input" placeholder="Password" type="password" id="txtPassword" />
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" id="btnLogin">Login</button>
+                                    <button class="uk-button uk-button-danger uk-width-1-1" id="btnReset">Clear</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Model Code-->
+    
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/uikit/js/uikit.min.js"></script>
+    <script src="~/lib/uikit/js/uikit-icons.min.js"></script>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        try {
+
+        }
+        catch (ex) {
+            alert(ex);
+        }
+    });
+
+
+    $("#btnLogin").click(function () {
+        try {
+            var IsValid = validateInputs();
+            var redirectURL = "";
+            if (IsValid) {
+                var txtUsername = $("#txtUserame").val();
+                var txtPassword = $("#txtPassword").val();
+                console.log("user" + txtUsername + "pass" + txtPassword);
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "strUsername": txtUsername,
+                        "strPassword": txtPassword
+                    },
+                    url: '@Url.Action("AuthenticateUser")',
+                    success: function (data) {
+                        //Redirected to Dashboard once autheticated.
+                        if (data.message == "FOUND") {
+                            window.location.href = '@Url.Action("Dashboard", "Dashboard")';
+                        }
+                        else if (data.message == "NOT_FOUND") {
+                            alert("User not found in the system. Please contact SYSTEM-ADMIN to resolve access related issues.");
+                        }
+                    },
+                    error: function (data) { alert("Error-Something bad happened."); }
+                });
+            }
+        }
+        catch (ex) {
+            alert(ex);
+        }
+
+        //This is much IMP. Always return false when completing ajax request. otherwise it won't pass request ahead.
+        return false;
+    });
+
+    $("#btnReset").click(function () {
+        location.reload();
+    });
+
+    function validateInputs() {
+        var IsValid = false;
+        var txtUsername = $("#txtUserame").val();
+        var txtPassword = $("#txtPassword").val();
+
+        if (txtUsername != "" && txtPassword != "") {
+            IsValid = true;
+        }
+        else {
+            IsValid = false;
+            alert("Please Enter Username and Password!");
+        }
+
+        return IsValid;
+    }
+</script>

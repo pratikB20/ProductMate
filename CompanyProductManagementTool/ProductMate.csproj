@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Customer\Data\" />
+    <Folder Include="Areas\Customer\Models\" />
+    <Folder Include="Areas\IT\Controllers\" />
+    <Folder Include="Areas\IT\Data\" />
+    <Folder Include="Areas\IT\Models\" />
+    <Folder Include="Areas\IT\Views\" />
+    <Folder Include="Areas\ProductSupport\Controllers\" />
+    <Folder Include="Areas\ProductSupport\Data\" />
+    <Folder Include="Areas\ProductSupport\Models\" />
+    <Folder Include="Areas\ProductSupport\Views\" />
+    <Folder Include="Areas\SalesMarketing\Controllers\" />
+    <Folder Include="Areas\SalesMarketing\Data\" />
+    <Folder Include="Areas\SalesMarketing\Models\" />
+    <Folder Include="Areas\SalesMarketing\Views\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\_Layout.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+</Project>

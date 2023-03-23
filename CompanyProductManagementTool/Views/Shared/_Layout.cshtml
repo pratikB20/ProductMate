@@ -1,0 +1,374 @@
+﻿@{
+    int UserRole = (int)TempData["UserRole"];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CompanyProductManagementTool</title>
+    <link rel="stylesheet" href="~/lib/uikit/css/uikit.min.css" />
+    <link rel="stylesheet" href="~/css/_Layout.css" />
+    <link rel="stylesheet" href="~/ApplevelCSS/AppLevel.css" />
+    <!-- Boxicons ICON CSS -->
+    <link rel='stylesheet' href="~/boxicons/css/boxicons.min.css">
+</head>
+<body>
+    <div class="sidebar close">
+        <div class="logo-details">
+            <i class='bx bxl-product-hunt'></i>
+            <span class="logo_name">Product Mate</span>
+        </div>
+        <ul class="nav-links">
+
+            @if (UserRole == 1) ///Role - Admin
+            {
+                <!--Dashboard Section-->
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+                <!--User Section-->
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-user'></i>
+                            <span class="link_name">Users</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Users</a></li>
+                        <li><a href="@Url.Action("RegisterUser","RegisterUser", new { area="Admin" })">Register User</a></li>
+                        <li><a href="#">User List</a></li>
+                        <li><a href="#">User Details</a></li>
+                    </ul>
+                </li>
+                <!--Customer Section-->
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bxs-user-voice'></i>
+                            <span class="link_name">Customer</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Customer</a></li>
+                        <li><a href="#">Register Organisation</a></li>
+                        <li><a href="#">Organisation List</a></li>
+                        <li><a href="#">Customer Owned Products</a></li>
+                        <li><a href="#">New Delegate</a></li>
+                        <li><a href="#">Delegate List</a></li>
+                        <li><a href="#">Customer Product Proposals</a></li>
+                        <li><a href="#">Customer Feedback</a></li>
+                    </ul>
+                </li>
+                <!--Product Support Section-->
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-desktop'></i>
+                            <span class="link_name">Product Support</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Product Support</a></li>
+                        <li><a href="#">Product Support Exec Requests</a></li>
+                        <li><a href="#">Add Product</a></li>
+                        <li><a href="#">Product List</a></li>
+                        <li><a href="#">New Case</a></li>
+                        <li><a href="#">Unassigned Case</a></li>
+                        <li><a href="#">Case History</a></li>
+                    </ul>
+                </li>
+                <!--IT Section-->
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-code-block'></i>
+                            <span class="link_name">IT</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">IT</a></li>
+                        <li><a href="#">Knowledge Articles</a></li>
+                        <li><a href="#">Knowledge Articles Dashboard</a></li>
+                        <li><a href="#">IT Tech Onboard Proposals</a></li>
+                    </ul>
+                </li>
+            }
+            else if (UserRole == 2) //Role - Customer
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Products</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Products</a></li>
+                        @*<li><a asp-area="Customer" asp-page="/NewProducts/NewProducts">New Products</a></li>*@
+                        @*<li><a asp-area="Customer" asp-controller="NewProducts" asp-action="NewProducts">New Products</a></li>*@
+                        <li><a href="@Url.Action("NewProducts","NewProducts", new { area="Customer" })">New Products</a></li>
+                        <li><a href="#">Request New Product</a></li>
+                        <li><a href="#">Propose New Product/Project</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">My Products</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">My Products</a></li>
+                        <li><a href="#">Products Owned</a></li>
+                        <li><a href="#">Product Owner Details</a></li>
+                        <li><a href="#">Registered Contracts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Product Cases</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Product Cases</a></li>
+                        <li><a href="#">New Case</a></li>
+                        <li><a href="#">Case History</a></li>
+                        <li><a href="#">Case Details</a></li>
+                        <li><a href="#">Consolidated Case Report</a></li>
+                    </ul>
+                </li>
+            }
+            else if (UserRole == 3) //Role - Product Support
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Product Cases</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Product Cases</a></li>
+                        <li><a href="#">New Case</a></li>
+                        <li><a href="#">Unassigned Cases</a></li>
+                        <li><a href="#">Case History</a></li>
+                        <li><a href="#">Consolidated Case Report</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Customer Register</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Customer Register</a></li>
+                        <li><a href="#">Customer List</a></li>
+                        <li><a href="#">Active Customer Requests</a></li>
+                        <li><a href="#">Customer Request History</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Product Support</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Product Support</a></li>
+                        <li><a href="#">Request New Product Support Executive</a></li>
+                        <li><a href="#">Support Executive List</a></li>
+                        <li><a href="#">Support Executive Details</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Products</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Products</a></li>
+                        <li><a href="#">New Products</a></li>
+                        <li><a href="#">Proposed Projects By Customers</a></li>
+                    </ul>
+                </li>
+            }
+            else if (UserRole == 4) //Role - IT Team
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Product Cases</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Product Cases</a></li>
+                        <li><a href="#">New Cases</a></li>
+                        <li><a href="#">Cases Assigned To Me</a></li>
+                        <li><a href="#">Case History</a></li>
+                        <li><a href="#">Consolidated Case Report</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Products</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Products</a></li>
+                        <li><a href="#">New Products</a></li>
+                        <li><a href="#">Proposed Projects By Customers</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="iocn-link">
+                        <a href="#">
+                            <i class='bx bx-collection'></i>
+                            <span class="link_name">Knowledge</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-menu">
+                        <li><a class="link_name" href="#">Knowledge</a></li>
+                        <li><a href="#">Add Knowledge Article</a></li>
+                        <li><a href="#">Knowledge Article History</a></li>
+                        <li><a href="#">Knowledge Article Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+            else //Role - Sales/Marketing
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+        </ul>
+        <div class="profile-details">
+            <div class="profile-content">
+                <!--<img src="image/profile.jpg" alt="profileImg">-->
+            </div>
+            <div class="name-job">
+                <div class="profile_name">@TempData["LoginUser"]</div>
+                @if (UserRole == 1)
+                {
+                    <div class="job">Administrator</div>
+                }
+                else if (UserRole == 2)
+                {
+                    <div class="job">Customer</div>
+                }
+                else if (UserRole == 3)
+                {
+                    <div class="job">Product Support</div>
+                }
+                else if (UserRole == 4)
+                {
+                    <div class="job">IT</div>
+                }
+                else
+                {
+                    <div class="job">Sales/Marketing</div>
+                }
+            </div>
+            <i class='bx bx-log-out'></i>
+        </div>
+    </div>
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu'></i>
+        </div>
+
+        <div class="uk-container uk-container-xlarge uk-margin-small-top uk-margin-small-bottom">
+            @RenderBody()
+        </div>
+    </section>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/uikit/js/uikit.min.js"></script>
+    <script src="~/lib/uikit/js/uikit-icons.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<script>
+    let arrow = document.querySelectorAll(".arrow");
+    for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e) => {
+            let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+            arrowParent.classList.toggle("showMenu");
+        });
+    }
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
+    console.log(sidebarBtn);
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+    });
+</script>
