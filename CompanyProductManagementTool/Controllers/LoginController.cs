@@ -11,7 +11,7 @@ namespace CompanyProductManagementTool.Controllers
 {
     public class LoginController : Controller
     {
-        DatabaseConnectivity clsDatabaseConnectivity = new DatabaseConnectivity();
+        DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
 
         public ActionResult Login()
         {

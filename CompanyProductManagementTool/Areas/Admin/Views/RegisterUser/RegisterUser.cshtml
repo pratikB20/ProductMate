@@ -1,4 +1,6 @@
-﻿<!--Import Layout in every page.-->
+﻿@model ProductMate.Models.Users;
+
+<!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -9,57 +11,43 @@
 <!--Form Section-->
 <div class="uk-grid-column-small uk-grid-row-small uk-child-width-1-2@s uk-child-width-1-3@s uk-child-width-1-4@s" uk-grid>
     <div class="uk-flex-column">
-        <label>First Name</label>
-        <input class="uk-input uk-form-small" type="text" id="txtFirstName">
+        @Html.Label("First Name")
+        @Html.TextBoxFor(m => m.strFirstName, new { @class = "uk-input uk-form-small", @id = "txtFirstName" })
     </div>
     <div class="uk-flex-column">
-        <label>Last Name</label>
-        <input class="uk-input uk-form-small" type="text" id="txtLastName">
+        @Html.Label("Last Name")
+        @Html.TextBoxFor(m => m.strLastName, new { @class = "uk-input uk-form-small", @id = "txtLastName" })
     </div>
     <div class="uk-flex-column">
-        <label>Contact</label>
-        <input class="uk-input uk-form-small" type="text" id="txtContact">
+        @Html.Label("Contact")
+        @Html.TextBoxFor(m => m.strContact, new { @class = "uk-input uk-form-small", @id = "txtContact" })
     </div>
     <div class="uk-flex-column">
-        <label>Email ID</label>
-        <input class="uk-input uk-form-small" type="email" id="txtEmailID">
+        @Html.Label("Email ID")
+        @Html.TextBoxFor(m => m.strEmailId, new { @class = "uk-input uk-form-small", @id = "txtEmailID" })
     </div>
     <div class="uk-flex-column">
-        <label>Username</label>
-        <input class="uk-input uk-form-small" type="text" id="txtUsername">
+        @Html.Label("Username")
+        @Html.TextBoxFor(m => m.strUsername, new { @class = "uk-input uk-form-small", @id = "txtUsername" })
     </div>
     <div class="uk-flex-column">
-        <label>Password</label>
-        <input class="uk-input uk-form-small" type="password" id="txtPassword">
+        @Html.Label("Password")
+        @Html.TextBoxFor(m => m.strPassword, new { @class = "uk-input uk-form-small", @id = "txtPassword" })
     </div>
     <div class="uk-flex-column">
-        <label for="ddlOrganisation">Select Organisation</label>
+        @Html.Label("Organisation")
         <div class="uk-form-controls">
-            <select class="uk-select uk-form-small" id="ddlOrganisation">
-                <option value="1">Cognizant</option>
-                <option value="2">Wipro</option>
-                <option value="3">TCS</option>
-                <option value="4">Infosys</option>
-                <option value="5">Tech Mahindra</option>
-                <option value="6">Wipro</option>
-            </select>
+            @Html.DropDownList("ddlOrganisation", (ViewBag.ddlOrganisation == null ? Enumerable.Empty<SelectListItem>() : (SelectList)ViewBag.ddlOrganisation), "Select Organisation", new { @class = "uk-select uk-form-small", @id = "ddlOrganisation" })
         </div>
     </div>
     <div class="uk-flex-column">
-        <label for="ddlRole">Select Role</label>
+        @Html.Label("Role")
         <div class="uk-form-controls">
-            <select class="uk-select uk-form-small" id="ddlRole">
-                <option value="1">Admin</option>
-                <option value="2">Customer</option>
-                <option value="3">Product Support</option>
-                <option value="4">IT</option>
-                <option value="5">Sales/Marketing</option>
-                <option value="6">Accounting</option>
-            </select>
+            @Html.DropDownListFor(m => m.intUserRoleId, (ViewBag.ddlRole == null ? Enumerable.Empty<SelectListItem>() : (SelectList)ViewBag.ddlRole), "Select Role", new { @class = "uk-select uk-form-small", @id = "ddlRole" })
         </div>
     </div>
     <div class="uk-flex-column">
-        <label for="ddlStatus">Status</label>
+        @Html.Label("Status")
         <div class="uk-form-controls">
             <select class="uk-select uk-form-small" id="ddlStatus">
                 <option value="1">Active</option>
@@ -85,6 +73,7 @@
     
 
 <script type="text/javascript">
+
     $("#btnSubmit").click(function () {
 
     });

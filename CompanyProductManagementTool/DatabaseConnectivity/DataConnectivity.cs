@@ -9,13 +9,36 @@ using Microsoft.Extensions.Configuration;
 
 namespace ProductMate.DatabaseConnectivity
 {
-    public class DatabaseConnectivity
+    public class DataConnectivity
     {
         private SqlConnection con;
         private void connection()
         {
             string constr = "Data Source=.;Server=DESKTOP-PAUP6KE;Initial Catalog=ProductMate;Trusted_Connection=True; User ID=SERVER160;password=Pratik@1234;Integrated Security=false";
             con = new SqlConnection(constr);
+        }
+
+        //Common Method to get dataset from SP without parameters
+        public DataTable getDataTable(string StoredProcedureName = "")
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand(StoredProcedureName, con);
+                com.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                return dataTable;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         //To view employee details with generic list     
