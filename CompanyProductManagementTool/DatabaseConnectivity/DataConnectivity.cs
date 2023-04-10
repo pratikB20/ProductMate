@@ -6,6 +6,7 @@ using ProductMate.Models;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Web.Mvc;
 
 namespace ProductMate.DatabaseConnectivity
 {
@@ -83,6 +84,5 @@ namespace ProductMate.DatabaseConnectivity
 
             return clsUsers;
         }
-
     }
 }

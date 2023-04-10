@@ -7,6 +7,7 @@ using ProductMate.DatabaseConnectivity;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Web.Mvc;
 
 namespace ProductMate.DatabaseConnectivity
 {
@@ -19,10 +20,39 @@ namespace ProductMate.DatabaseConnectivity
             con = new SqlConnection(constr);
         }
 
-        public SelectListItems getOrganisations()
+        public SelectListItem convertToSelectList(KeyValues ColKeyValues)
         {
-            SelectListItem clsSelectListItem;
-            SelectListItems colSelectListItem = new SelectListItems();
+            SelectListItem clsSelectListItem = null;
+            try
+            {
+                if (ColKeyValues.Count > 0)
+                {
+                    foreach (KeyValue clsKeyValue in ColKeyValues)
+                    {
+                        clsSelectListItem = new SelectListItem()
+                        {
+                            Value = Convert.ToString(clsKeyValue.intId),
+                            Text = clsKeyValue.strName
+                        };
+                    }
+
+                    return clsSelectListItem;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public KeyValues getOrganisations()
+        {
+            KeyValue clsSelectListItem;
+            KeyValues colSelectListItem = new KeyValues();
             DataTable dataTable = new DataTable();
             DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
@@ -32,7 +62,7 @@ namespace ProductMate.DatabaseConnectivity
                 {
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
-                        clsSelectListItem = new SelectListItem()
+                        clsSelectListItem = new KeyValue()
                         {
                             intId = Convert.ToInt32(dataRow["organisation_id"]),
                             strName = Convert.ToString(dataRow["organisation_name"])

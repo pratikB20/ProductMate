@@ -7,9 +7,5 @@ using System.Collections.ObjectModel;
 
 namespace ProductMate.Models
 {
-    public class SelectListItem
-    {
-        public int intId { get; set; }
-        public string strName { get; set; }
-    }
+    public class KeyValues : Collection<KeyValue>{ }
 }

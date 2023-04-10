@@ -17,7 +17,7 @@ namespace ProductMate.Areas.Admin.Controllers
         {
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
 
-            ViewBag.ddlOrganisation = clsAppDataConnectivity.getOrganisations();
+            ViewBag.ddlOrganisation = null;
             ViewBag.ddlRole = null;
             return View();
         }
