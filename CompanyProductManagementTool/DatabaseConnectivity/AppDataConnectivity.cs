@@ -52,6 +52,38 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
+        public List<SelectListItem> getUserRoles()
+        {
+            DataTable dataTable = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            List<SelectListItem> roles = new List<SelectListItem>();
+            try
+            {
+                dataTable = clsDatabaseConnectivity.getDataTable("GetUserRoles");
+
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    roles.Add(new SelectListItem
+                    {
+                        Text = dataRow["role_name"].ToString(),
+                        Value = dataRow["user_role_id"].ToString()
+                    });
+                }
+
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsDatabaseConnectivity = null;
+                dataTable = null;
+                roles = null;
+            }
+        }
+
 
 
     }

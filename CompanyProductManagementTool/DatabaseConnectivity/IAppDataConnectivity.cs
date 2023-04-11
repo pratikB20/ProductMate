@@ -12,8 +12,9 @@ namespace ProductMate.DatabaseConnectivity
 {
     public interface IAppDataConnectivity
     {
-        //AREA - ADMIN
+        //AREA - Admin
         public List<SelectListItem> getOrganisations();
+        public List<SelectListItem> getUserRoles();
        
 
         //AREA - Customer

@@ -20,7 +20,7 @@ namespace ProductMate.Areas.Admin.Controllers
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
 
             ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
-            ViewBag.ddlRole = null;
+            ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
             return View();
         }
     }

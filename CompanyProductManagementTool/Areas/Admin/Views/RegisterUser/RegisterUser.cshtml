@@ -41,9 +41,9 @@
         </div>
     </div>
     <div class="uk-flex-column">
-        @Html.Label("Role")
+        @Html.Label("User Role")
         <div class="uk-form-controls">
-            @Html.DropDownListFor(m => m.intUserRoleId, (ViewBag.ddlRole == null ? Enumerable.Empty<SelectListItem>() : (SelectList)ViewBag.ddlRole), "Select Role", new { @class = "uk-select uk-form-small", @id = "ddlRole" })
+            @Html.DropDownList("ddlUserRole", ViewBag.ddlUserRole, "Select Role", new { @class = "uk-select uk-form-small", @id = "ddlUserRole" })
         </div>
     </div>
     <div class="uk-flex-column">
