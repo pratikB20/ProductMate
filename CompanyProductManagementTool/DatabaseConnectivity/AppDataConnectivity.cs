@@ -7,7 +7,8 @@ using ProductMate.DatabaseConnectivity;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProductMate.DatabaseConnectivity
 {
@@ -20,57 +21,24 @@ namespace ProductMate.DatabaseConnectivity
             con = new SqlConnection(constr);
         }
 
-        public SelectListItem convertToSelectList(KeyValues ColKeyValues)
+        public List<SelectListItem> getOrganisations()
         {
-            SelectListItem clsSelectListItem = null;
-            try
-            {
-                if (ColKeyValues.Count > 0)
-                {
-                    foreach (KeyValue clsKeyValue in ColKeyValues)
-                    {
-                        clsSelectListItem = new SelectListItem()
-                        {
-                            Value = Convert.ToString(clsKeyValue.intId),
-                            Text = clsKeyValue.strName
-                        };
-                    }
-
-                    return clsSelectListItem;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public KeyValues getOrganisations()
-        {
-            KeyValue clsSelectListItem;
-            KeyValues colSelectListItem = new KeyValues();
             DataTable dataTable = new DataTable();
             DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            List<SelectListItem> organisations = new List<SelectListItem>();
             try
             {
                 dataTable = clsDatabaseConnectivity.getDataTable("GetOrganisations");
-                if (dataTable.Rows.Count > 0)
+
+                foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    foreach (DataRow dataRow in dataTable.Rows)
-                    {
-                        clsSelectListItem = new KeyValue()
-                        {
-                            intId = Convert.ToInt32(dataRow["organisation_id"]),
-                            strName = Convert.ToString(dataRow["organisation_name"])
-                        };
-                        colSelectListItem.Add(clsSelectListItem);
-                    }
+                    organisations.Add(new SelectListItem { 
+                        Text = dataRow["organisation_name"].ToString(), 
+                        Value = dataRow["organisation_id"].ToString() 
+                    });
                 }
-                return colSelectListItem;
+
+                return organisations;
             }
             catch (Exception ex)
             {
@@ -79,6 +47,8 @@ namespace ProductMate.DatabaseConnectivity
             finally
             {
                 clsDatabaseConnectivity = null;
+                dataTable = null;
+                organisations = null;
             }
         }
 

@@ -37,7 +37,7 @@
     <div class="uk-flex-column">
         @Html.Label("Organisation")
         <div class="uk-form-controls">
-            @Html.DropDownList("ddlOrganisation", (ViewBag.ddlOrganisation == null ? Enumerable.Empty<SelectListItem>() : (SelectList)ViewBag.ddlOrganisation), "Select Organisation", new { @class = "uk-select uk-form-small", @id = "ddlOrganisation" })
+            @Html.DropDownList("ddlOrganisation", ViewBag.ddlOrganisation, "Select Organisation", new { @class = "uk-select uk-form-small", @id = "ddlOrganisation" })
         </div>
     </div>
     <div class="uk-flex-column">
