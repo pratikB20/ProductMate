@@ -49,10 +49,11 @@
     <div class="uk-flex-column">
         @Html.Label("Status")
         <div class="uk-form-controls">
-            <select class="uk-select uk-form-small" id="ddlStatus">
-                <option value="1">Active</option>
-                <option value="0">Inactive</option>
-            </select>
+            @Html.DropDownList("ddlStatus", new List<SelectListItem>
+            {
+                new SelectListItem { Text="Active", Value="1" },
+                new SelectListItem { Text="Inactive", Value="0" }
+            } , new { @class = "uk-select uk-form-small", @id = "ddlStatus" })
         </div>
     </div>
 </div>
@@ -70,12 +71,11 @@
         Reset
     </button>
 </div>
-    
 
 <script type="text/javascript">
 
     $("#btnSubmit").click(function () {
-
+        alert("jQuery connected");
     });
 
     $("#btnReset").click(function () {
