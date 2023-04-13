@@ -63,7 +63,7 @@ namespace ProductMate.DatabaseConnectivity
             {
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-                    clsUsers.intUsersId = Convert.ToInt32(dataRow["usersid"]);
+                    clsUsers.intUsersId = Convert.ToInt32(dataRow["users_id"]);
                     clsUsers.strFirstName = Convert.ToString(dataRow["first_name"]);
                     clsUsers.strLastName = Convert.ToString(dataRow["last_name"]);
                     clsUsers.strContact = Convert.ToString(dataRow["contact"]);
@@ -71,10 +71,10 @@ namespace ProductMate.DatabaseConnectivity
                     clsUsers.strUsername = Convert.ToString(dataRow["username"]);
                     clsUsers.strPassword = Convert.ToString(dataRow["password"]);
                     clsUsers.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
-                    clsUsers.strCreatedBy = Convert.ToString(dataRow["created_by"]);
+                    clsUsers.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
                     clsUsers.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
                     clsUsers.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
-                    clsUsers.blnStatus = Convert.ToBoolean(dataRow["status"]);  
+                    clsUsers.intStatus = Convert.ToInt32(dataRow["status"]);  
                 }
             }
             else

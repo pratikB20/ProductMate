@@ -15,7 +15,7 @@ namespace ProductMate.DatabaseConnectivity
         //AREA - Admin
         public List<SelectListItem> getOrganisations();
         public List<SelectListItem> getUserRoles();
-       
+        public Boolean SaveUser(Users clsUsers);
 
         //AREA - Customer
         //AREA - Product Support

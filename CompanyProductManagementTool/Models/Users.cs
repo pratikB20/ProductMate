@@ -15,9 +15,9 @@ namespace ProductMate.Models
         public string strUsername { get; set; }
         public string strPassword { get; set; }
         public DateTime dteCreateDate { get; set; }
-        public string strCreatedBy { get; set; }
+        public int intCreatedBy { get; set; }
         public int intOrganisationId { get; set; }
         public int intUserRoleId { get; set; }
-        public Boolean blnStatus { get; set; }
+        public int intStatus { get; set; }
     }
 }

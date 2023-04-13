@@ -23,5 +23,40 @@ namespace ProductMate.Areas.Admin.Controllers
             ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
             return View();
         }
+
+        [HttpPost]
+        [Route("SaveUser")]
+        public IActionResult SaveUser(Users clsUsers)
+        {
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            Boolean IsUserAdded = false;
+            String message = string.Empty;
+            try
+            {
+                //Inserting the user into the system
+                clsUsers.dteCreateDate = DateTime.Now;
+                clsUsers.intCreatedBy = 1;
+
+                IsUserAdded = clsAppDataConnectivity.SaveUser(clsUsers);
+                if (IsUserAdded)
+                {
+                    message = "OK";
+                }
+                else
+                {
+                    message = "ERROR";
+                }
+
+                return Json(new { message = message });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
     }
 }

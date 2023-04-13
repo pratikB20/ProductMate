@@ -84,6 +84,50 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
+        public Boolean SaveUser(Users clsUsers)
+        {
+            Boolean IsUserAdded = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("AddNewUser", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@FirstName", clsUsers.strFirstName);
+                com.Parameters.AddWithValue("@LastName", clsUsers.strLastName);
+                com.Parameters.AddWithValue("@Contact", clsUsers.strContact);
+                com.Parameters.AddWithValue("@EmailId", clsUsers.strEmailId);
+                com.Parameters.AddWithValue("@Username", clsUsers.strUsername);
+                com.Parameters.AddWithValue("@Password", clsUsers.strPassword);
+                com.Parameters.AddWithValue("@CreateDate", clsUsers.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsUsers.intCreatedBy);
+                com.Parameters.AddWithValue("@OrganisationId", clsUsers.intOrganisationId);
+                com.Parameters.AddWithValue("@UserRoleId", clsUsers.intUserRoleId);
+                com.Parameters.AddWithValue("@Status", clsUsers.intStatus);
+
+                con.Open();
+                int insertCount = com.ExecuteNonQuery();
+                con.Close();
+                if (insertCount >= 1)
+                {
+                    IsUserAdded = true;
+                }
+                else
+                {
+                    IsUserAdded = false;
+                }
+
+                return IsUserAdded;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
+
 
 
     }
