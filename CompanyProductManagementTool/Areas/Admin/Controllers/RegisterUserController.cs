@@ -17,11 +17,26 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("RegisterUser")]
         public IActionResult RegisterUser()
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();          
+            try
+            {
+                //Use these 2 lines in each page load method to persist the user all time.
+                int UserRole = 0;
+                UserRole = (int)TempData["UserRole"];
+                TempData["UserRole"] = UserRole;
 
-            ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
-            ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
-            return View();
+                ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
+                ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                TempData.Keep();
+            }
         }
 
         [HttpPost]

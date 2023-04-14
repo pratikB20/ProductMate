@@ -7,6 +7,7 @@ using ProductMate.Models;
 using System.Web.Mvc.Ajax;
 using ProductMate.DatabaseConnectivity;
 
+
 namespace CompanyProductManagementTool.Controllers
 {
     public class LoginController : Controller
@@ -28,8 +29,8 @@ namespace CompanyProductManagementTool.Controllers
                 
                 if (clsUsers != null)
                 {
-                    TempData["LoginUser"] = clsUsers.strFirstName + " " + clsUsers.strLastName;
-                    TempData["UserRole"] = clsUsers.intUserRoleId;
+                    TempData["Username"] = strUsername;
+                    TempData["Password"] = strPassword;
                     return Json(new { message = "FOUND", redirectUrl = Url.Action("Dashboard", "Dashboard") });
                 }
                 else

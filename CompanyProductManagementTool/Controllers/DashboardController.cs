@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProductMate.Models;
+using ProductMate.DatabaseConnectivity;
 
 namespace CompanyProductManagementTool.Controllers
 {
@@ -12,16 +13,20 @@ namespace CompanyProductManagementTool.Controllers
         public ActionResult Dashboard()
         {
             int intUserRole = 0;
+            Users clsUsers = new Users();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
             {
                 //This code is used to persist role even when refreshed the Dashboard page
-                intUserRole = (int)TempData["UserRole"];
-                TempData["UserRole"] = intUserRole;
+                clsUsers = clsDatabaseConnectivity.AuthenticateUser((String)TempData["Username"],(String)TempData["Password"]);
+                TempData["LoginUser"] = clsUsers.strFirstName + " " + clsUsers.strLastName;
+                TempData["UserRole"] = clsUsers.intUserRoleId;
+
                 return View();
             }
             catch(Exception ex)
             {
-                return View();
+                throw ex;
             }
             finally
             {
