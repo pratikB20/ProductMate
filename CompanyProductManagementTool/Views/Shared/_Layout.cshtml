@@ -1,5 +1,9 @@
 ﻿@{
-    int UserRole = (int)TempData["UserRole"];
+    int UserRole = 1; //Default set to Admin for now to deal with Null error. set it manual depending on work you are doing.
+    if(TempData["UserRole"] != null)
+    {
+        UserRole = (int)TempData["UserRole"];
+    }
 }
 
 <!DOCTYPE html>
@@ -50,7 +54,7 @@
                     <ul class="sub-menu">
                         <li><a class="link_name" href="#">Users</a></li>
                         <li><a href="@Url.Action("RegisterUser","RegisterUser", new { area="Admin" })">Register User</a></li>
-                        <li><a href="#">User List</a></li>
+                        <li><a href="@Url.Action("UserList","UserList", new { area="Admin" })">User List</a></li>
                         <li><a href="#">User Details</a></li>
                     </ul>
                 </li>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ProductMate.Models;
 using System.Web.Mvc.Ajax;
 using ProductMate.DatabaseConnectivity;
+using Microsoft.AspNetCore.Session;
 
 
 namespace CompanyProductManagementTool.Controllers
@@ -31,6 +32,7 @@ namespace CompanyProductManagementTool.Controllers
                 {
                     TempData["Username"] = strUsername;
                     TempData["Password"] = strPassword;
+
                     return Json(new { message = "FOUND", redirectUrl = Url.Action("Dashboard", "Dashboard") });
                 }
                 else

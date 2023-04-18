@@ -1,3 +1,13 @@
 ﻿label{
     font-weight:600;
 }
+
+#tableStyle{
+    font-size:14px;
+}
+
+#tableStyle #tableHead tr th {
+    color: white;
+    font-weight: 700;
+    font-size:14px;
+}
