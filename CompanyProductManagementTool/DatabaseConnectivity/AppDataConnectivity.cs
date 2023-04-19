@@ -128,6 +128,57 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
+        public List<Users> getAllUsers()
+        {
+            Users clsUsers = new Users();
+            List<Users> colUsers = new List<Users>();
+            DataTable dataTable = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            try
+            {
+                dataTable = clsDatabaseConnectivity.getDataTable("GetAllUsers");
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in dataTable.Rows)
+                    {
+                        clsUsers.intUsersId = Convert.ToInt32(dataRow["users_id"]);
+                        clsUsers.strFirstName = Convert.ToString(dataRow["first_name"]);
+                        clsUsers.strLastName = Convert.ToString(dataRow["last_name"]);
+                        clsUsers.strContact = Convert.ToString(dataRow["contact"]);
+                        clsUsers.strEmailId = Convert.ToString(dataRow["email_id"]);
+                        clsUsers.strUsername = Convert.ToString(dataRow["username"]);
+                        clsUsers.strPassword = Convert.ToString(dataRow["password"]);
+                        clsUsers.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        clsUsers.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                        clsUsers.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
+                        clsUsers.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
+                        clsUsers.intStatus = Convert.ToInt32(dataRow["status"]);
+
+                        colUsers.Add(clsUsers);
+                    }
+                }
+                else
+                {
+                    clsUsers = null;
+                    colUsers = null;
+                }
+                return colUsers;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsUsers = null;
+                colUsers = null;
+            }
+        }
+
+
+
+
 
 
     }
