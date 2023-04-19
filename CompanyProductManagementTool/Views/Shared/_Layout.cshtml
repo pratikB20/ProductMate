@@ -1,10 +1,5 @@
-﻿@{
-    int UserRole = 1; //Default set to Admin for now to deal with Null error. set it manual depending on work you are doing.
-    if(TempData["UserRole"] != null)
-    {
-        UserRole = (int)TempData["UserRole"];
-    }
-}
+﻿@using Microsoft.AspNetCore.Http;
+@using ProductMate.Models;  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +25,7 @@
         </div>
         <ul class="nav-links">
 
-            @if (UserRole == 1) ///Role - Admin
+            @if (@Context.Session.GetInt32("UserRole") == 1) ///Role - Admin
             {
                 <!--Dashboard Section-->
                 <li>
@@ -114,7 +109,7 @@
                     </ul>
                 </li>
             }
-            else if (UserRole == 2) //Role - Customer
+            else if (@Context.Session.GetInt32("UserRole") == 2) //Role - Customer
             {
                 <li>
                     <a href="#">
@@ -174,7 +169,7 @@
                     </ul>
                 </li>
             }
-            else if (UserRole == 3) //Role - Product Support
+            else if (@Context.Session.GetInt32("UserRole") == 3) //Role - Product Support
             {
                 <li>
                     <a href="#">
@@ -246,7 +241,7 @@
                     </ul>
                 </li>
             }
-            else if (UserRole == 4) //Role - IT Team
+            else if (@Context.Session.GetInt32("UserRole") == 4) //Role - IT Team
             {
                 <li>
                     <a href="#">
@@ -321,20 +316,20 @@
                 <!--<img src="image/profile.jpg" alt="profileImg">-->
             </div>
             <div class="name-job">
-                <div class="profile_name">@TempData["LoginUser"]</div>
-                @if (UserRole == 1)
+                <div class="profile_name">@Context.Session.GetString("LoginUser")</div>
+                @if (@Context.Session.GetInt32("UserRole") == 1)
                 {
                     <div class="job">Administrator</div>
                 }
-                else if (UserRole == 2)
+                else if (@Context.Session.GetInt32("UserRole") == 2)
                 {
                     <div class="job">Customer</div>
                 }
-                else if (UserRole == 3)
+                else if (@Context.Session.GetInt32("UserRole") == 3)
                 {
                     <div class="job">Product Support</div>
                 }
-                else if (UserRole == 4)
+                else if (@Context.Session.GetInt32("UserRole") == 4)
                 {
                     <div class="job">IT</div>
                 }

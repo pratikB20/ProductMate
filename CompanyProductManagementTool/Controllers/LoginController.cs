@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +32,12 @@ namespace CompanyProductManagementTool.Controllers
                 
                 if (clsUsers != null)
                 {
-                    TempData["Username"] = strUsername;
-                    TempData["Password"] = strPassword;
+                    //Session is used to stored the database fetched objects to use anywhere in the request
+                    //Below way is used to store simple objects such as int or string variables
+                    HttpContext.Session.SetString("LoginUser", clsUsers.strFirstName + " " + clsUsers.strLastName);
+                    HttpContext.Session.SetInt32("UserRole", clsUsers.intUserRoleId);
+                    //Below way is used to store the large objects such as class object with data or collections
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, "User", clsUsers);
 
                     return Json(new { message = "FOUND", redirectUrl = Url.Action("Dashboard", "Dashboard") });
                 }

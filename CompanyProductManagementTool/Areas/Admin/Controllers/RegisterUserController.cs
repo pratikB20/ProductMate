@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//IMP Session namespace to import whenever wanted to use session variables.
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,6 @@ namespace ProductMate.Areas.Admin.Controllers
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();          
             try
             {
-                //Use these 2 lines in each page load method to persist the user all time.
-                int UserRole = 0;
-                UserRole = (int)TempData["UserRole"];
-                TempData["UserRole"] = UserRole;
-
                 ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
                 ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
                 return View();

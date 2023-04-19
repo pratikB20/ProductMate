@@ -12,16 +12,8 @@ namespace CompanyProductManagementTool.Controllers
     {
         public ActionResult Dashboard()
         {
-            int intUserRole = 0;
-            Users clsUsers = new Users();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
             {
-                //This code is used to persist role even when refreshed the Dashboard page
-                clsUsers = clsDatabaseConnectivity.AuthenticateUser((String)TempData["Username"],(String)TempData["Password"]);
-                TempData["LoginUser"] = clsUsers.strFirstName + " " + clsUsers.strLastName;
-                TempData["UserRole"] = clsUsers.intUserRoleId;
-
                 return View();
             }
             catch(Exception ex)
@@ -30,7 +22,7 @@ namespace CompanyProductManagementTool.Controllers
             }
             finally
             {
-                TempData.Keep();
+
             }
         }
     }

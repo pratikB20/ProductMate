@@ -1,2 +1,4 @@
-﻿
-<h2>Hello : @TempData["UserRole"]</h2>
+﻿<!--IMP Session namespace to import whenever wanted to use session variables.-->
+@using Microsoft.AspNetCore.Http;
+
+<h2>Hello : @Context.Session.GetInt32("UserRole")</h2>
