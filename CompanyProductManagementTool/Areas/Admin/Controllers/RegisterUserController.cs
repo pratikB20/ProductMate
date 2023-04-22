@@ -43,11 +43,13 @@ namespace ProductMate.Areas.Admin.Controllers
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Boolean IsUserAdded = false;
             String message = string.Empty;
+            Users clsLoggedInUser = new Users();
             try
             {
                 //Inserting the user into the system
                 clsUsers.dteCreateDate = DateTime.Now;
-                clsUsers.intCreatedBy = 1;
+                clsLoggedInUser = HttpContext.Session.GetObjectFromJson<Users>("User");
+                clsUsers.intCreatedBy = clsLoggedInUser.intUsersId;
 
                 IsUserAdded = clsAppDataConnectivity.SaveUser(clsUsers);
                 if (IsUserAdded)
