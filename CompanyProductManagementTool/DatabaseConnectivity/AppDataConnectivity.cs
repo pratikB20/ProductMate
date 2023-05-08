@@ -130,7 +130,7 @@ namespace ProductMate.DatabaseConnectivity
 
         public List<Users> getAllUsers()
         {
-            Users clsUsers = new Users();
+            Users clsUsers;
             List<Users> colUsers = new List<Users>();
             DataTable dataTable = new DataTable();
             DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
@@ -142,6 +142,7 @@ namespace ProductMate.DatabaseConnectivity
                 {
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
+                        clsUsers = new Users();
                         clsUsers.intUsersId = Convert.ToInt32(dataRow["users_id"]);
                         clsUsers.strFirstName = Convert.ToString(dataRow["first_name"]);
                         clsUsers.strLastName = Convert.ToString(dataRow["last_name"]);
@@ -156,6 +157,7 @@ namespace ProductMate.DatabaseConnectivity
                         clsUsers.intStatus = Convert.ToInt32(dataRow["status"]);
 
                         colUsers.Add(clsUsers);
+                        clsUsers = null;
                     }
                 }
                 else
