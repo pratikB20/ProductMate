@@ -19,7 +19,7 @@ namespace ProductMate.DatabaseConnectivity
             con = new SqlConnection(constr);
         }
 
-        //Common Method to get dataset from SP without parameters
+        //Common Method to get datatable from SP without parameters
         public DataTable getDataTable(string StoredProcedureName = "")
         {
             DataTable dataTable = new DataTable();
@@ -40,6 +40,22 @@ namespace ProductMate.DatabaseConnectivity
             {
                 throw ex;
             }
+        }
+
+        //Common Method to get datatable from QUERY
+        public DataTable getDataTableBySQLQuery(string strQuery)
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp;
+            try
+            {
+                connection();
+                adp = new SqlDataAdapter(strQuery, con);
+                adp.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { adp = null; }
         }
 
         //To view employee details with generic list     
