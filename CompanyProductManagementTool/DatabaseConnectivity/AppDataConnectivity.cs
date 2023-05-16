@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProductMate.Models;
+using ProductMate.Areas.Admin.Models;
 using ProductMate.DatabaseConnectivity;
 using System.Data;
 using System.Data.SqlClient;
@@ -128,10 +129,10 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
-        public List<Users> getAllUsers()
+        public List<UserListGrid> getAllUsers()
         {
-            Users clsUsers;
-            List<Users> colUsers = new List<Users>();
+            UserListGrid clsUserListGrid;
+            List<UserListGrid> colUserListGrid = new List<UserListGrid>();
             DataTable dataTable = new DataTable();
             DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
@@ -142,30 +143,80 @@ namespace ProductMate.DatabaseConnectivity
                 {
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
-                        clsUsers = new Users();
-                        clsUsers.intUsersId = Convert.ToInt32(dataRow["users_id"]);
-                        clsUsers.strFirstName = Convert.ToString(dataRow["first_name"]);
-                        clsUsers.strLastName = Convert.ToString(dataRow["last_name"]);
-                        clsUsers.strContact = Convert.ToString(dataRow["contact"]);
-                        clsUsers.strEmailId = Convert.ToString(dataRow["email_id"]);
-                        clsUsers.strUsername = Convert.ToString(dataRow["username"]);
-                        clsUsers.strPassword = Convert.ToString(dataRow["password"]);
-                        clsUsers.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
-                        clsUsers.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
-                        clsUsers.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
-                        clsUsers.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
-                        clsUsers.intStatus = Convert.ToInt32(dataRow["status"]);
+                        clsUserListGrid = new UserListGrid();
+                        if(dataRow["users_id"] != null) 
+                        {
+                            clsUserListGrid.intUsersId = Convert.ToInt32(dataRow["users_id"]);
+                        }
+                        if (dataRow["first_name"] != null)
+                        {
+                            clsUserListGrid.strFirstName = Convert.ToString(dataRow["first_name"]);
+                        }
+                        if (dataRow["last_name"] != null)
+                        {
+                            clsUserListGrid.strLastName = Convert.ToString(dataRow["last_name"]);
+                        }
+                        if (dataRow["contact"] != null)
+                        {
+                            clsUserListGrid.strContact = Convert.ToString(dataRow["contact"]);
+                        }
+                        if (dataRow["email_id"] != null)
+                        {
+                            clsUserListGrid.strEmailId = Convert.ToString(dataRow["email_id"]);
+                        }
+                        if (dataRow["username"] != null)
+                        {
+                            clsUserListGrid.strUsername = Convert.ToString(dataRow["username"]);
+                        }
+                        if (dataRow["password"] != null)
+                        {
+                            clsUserListGrid.strPassword = Convert.ToString(dataRow["password"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsUserListGrid.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            clsUserListGrid.strCreatedBy = getCreatedByUsername(Convert.ToString(dataRow["created_by"]));
 
-                        colUsers.Add(clsUsers);
-                        clsUsers = null;
+                            clsUserListGrid.strCreatedBy = clsUserListGrid.strCreatedBy == "" ? "Other" : clsUserListGrid.strCreatedBy;
+                        }
+                        if (dataRow["organisation_id"] != null)
+                        {
+                            clsUserListGrid.strOrganisation = Convert.ToString(
+                                clsDatabaseConnectivity.getDataTableBySQLQuery(
+                                "SELECT organisation_name FROM users INNER JOIN organisation " +
+                                "ON users.organisation_id = organisation.organisation_id " +
+                                "WHERE users.users_id =  " + clsUserListGrid.intUsersId
+                                ));
+
+                            clsUserListGrid.strOrganisation = Convert.ToString(clsUserListGrid.strOrganisation) == "0" ? "Other" : Convert.ToString(clsUserListGrid.strOrganisation);
+                        }
+                        if (dataRow["user_role_id"] != null)
+                        {
+                            clsUserListGrid.strUserRole = Convert.ToString(
+                                clsDatabaseConnectivity.getDataTableBySQLQuery(
+                                "SELECT role_name FROM users INNER JOIN user_role " +
+                                "ON users.user_role_id = user_role.user_role_id " +
+                                "WHERE users_id = " + clsUserListGrid.intUsersId
+                                ));
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsUserListGrid.strStatus = Convert.ToString(dataRow["status"]) == "0" ? "Inactive" : "Active";
+                        }
+                        
+                        colUserListGrid.Add(clsUserListGrid);
+                        clsUserListGrid = null;
                     }
                 }
                 else
                 {
-                    clsUsers = null;
-                    colUsers = null;
+                    clsUserListGrid = null;
+                    colUserListGrid = null;
                 }
-                return colUsers;
+                return colUserListGrid;
             }
             catch(Exception ex)
             {
@@ -173,13 +224,36 @@ namespace ProductMate.DatabaseConnectivity
             }
             finally
             {
-                clsUsers = null;
-                colUsers = null;
+                clsUserListGrid = null;
+                colUserListGrid = null;
             }
         }
 
 
+        public string getCreatedByUsername(string strCreatedBy)
+        {
+            string strCreatedByUsername = string.Empty;
+            DataTable dt = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            try
+            {
+                dt = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + strCreatedBy);
 
+                foreach (DataRow dataRow in dt.Rows) {
+                    strCreatedByUsername = (String)dataRow["username"];
+                }
+
+                return strCreatedByUsername;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
 
 
 

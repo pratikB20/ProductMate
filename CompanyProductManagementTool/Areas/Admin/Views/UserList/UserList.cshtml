@@ -1,16 +1,17 @@
 ﻿<!--Import Layout in every page.-->
-@model IEnumerable<ProductMate.Models.Users>
+@model IEnumerable<ProductMate.Areas.Admin.Models.UserListGrid>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!--Form Heading Section-->
-<h3 class="uk-heading-line uk-text-center"><span>Register User</span></h3>
+<h3 class="uk-heading-line uk-text-center"><span>User List</span></h3>
 
 <!--Table Section-->
 <table class="uk-table uk-table-hover uk-table-small uk-table-divider uk-margin-large">
     <thead>
         <tr>
+            <th><!--Checkbox--></th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Contact</th>
@@ -28,19 +29,20 @@
         {
             if (Model.Count() != 0)
             {
-                foreach (var clscircular in Model)
+                foreach (var clsUserListGrid in Model)
                 {
                     <tr>
-                        <td>@clscircular.strFirstName</td>
-                        <td>@clscircular.strLastName</td>
-                        <td>@clscircular.strContact</td>
-                        <td>@clscircular.strEmailId</td>
-                        <td>@clscircular.strUsername</td>
-                        <td>@clscircular.dteCreateDate</td>
-                        <td>@clscircular.intCreatedBy</td>
-                        <td>@clscircular.intOrganisationId</td>
-                        <td>@clscircular.intUserRoleId</td>
-                        <td>@clscircular.intStatus</td>
+                        <td><input type="checkbox" class="uk-checkbox" id="chkUsersId" value="@clsUserListGrid.intUsersId" /></td>
+                        <td>@clsUserListGrid.strFirstName</td>
+                        <td>@clsUserListGrid.strLastName</td>
+                        <td>@clsUserListGrid.strContact</td>
+                        <td>@clsUserListGrid.strEmailId</td>
+                        <td>@clsUserListGrid.strUsername</td>
+                        <td>@clsUserListGrid.dteCreateDate</td>
+                        <td>@clsUserListGrid.strCreatedBy</td>
+                        <td>@clsUserListGrid.strOrganisation</td>
+                        <td>@clsUserListGrid.strUserRole</td>
+                        <td>@clsUserListGrid.strStatus</td>
                     </tr>
                 }
             }

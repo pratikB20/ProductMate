@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProductMate.Models;
+using ProductMate.Areas.Admin.Models;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ namespace ProductMate.DatabaseConnectivity
         public List<SelectListItem> getOrganisations();
         public List<SelectListItem> getUserRoles();
         public Boolean SaveUser(Users clsUsers);
-        public List<Users> getAllUsers();
+        public List<UserListGrid> getAllUsers();
 
         //AREA - Customer
         //AREA - Product Support

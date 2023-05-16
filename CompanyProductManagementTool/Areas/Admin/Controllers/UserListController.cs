@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ProductMate.Models;
+using ProductMate.Areas.Admin.Models;
 using System.Data;
 using System.Data.SqlClient;
 using ProductMate.DatabaseConnectivity;
@@ -18,11 +19,11 @@ namespace ProductMate.Areas.Admin.Controllers
         public IActionResult UserList()
         {
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
-            List<Users> ColUsers = new List<Users>();
+            List<UserListGrid> ColUserListGrid = new List<UserListGrid>();
             try
             {
-                ColUsers = clsAppDataConnectivity.getAllUsers();
-                return View(ColUsers);
+                ColUserListGrid = clsAppDataConnectivity.getAllUsers();
+                return View(ColUserListGrid);
             }
             catch(Exception ex)
             {
@@ -31,7 +32,7 @@ namespace ProductMate.Areas.Admin.Controllers
             finally
             {
                 clsAppDataConnectivity = null;
-                ColUsers = null;
+                ColUserListGrid = null;
             }
         }
     }
