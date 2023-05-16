@@ -134,6 +134,7 @@ namespace ProductMate.DatabaseConnectivity
             UserListGrid clsUserListGrid;
             List<UserListGrid> colUserListGrid = new List<UserListGrid>();
             DataTable dataTable = new DataTable();
+            DataTable tempDataTable = new DataTable();
             DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
             {
@@ -178,29 +179,33 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["created_by"] != null)
                         {
-                            clsUserListGrid.strCreatedBy = getCreatedByUsername(Convert.ToString(dataRow["created_by"]));
-
-                            clsUserListGrid.strCreatedBy = clsUserListGrid.strCreatedBy == "" ? "Other" : clsUserListGrid.strCreatedBy;
+                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strCreatedBy = (String)dr["username"]; }
+                            }
+                            else { clsUserListGrid.strCreatedBy = "Other"; }
+                            tempDataTable = null;
                         }
                         if (dataRow["organisation_id"] != null)
                         {
-                            clsUserListGrid.strOrganisation = Convert.ToString(
-                                clsDatabaseConnectivity.getDataTableBySQLQuery(
-                                "SELECT organisation_name FROM users INNER JOIN organisation " +
-                                "ON users.organisation_id = organisation.organisation_id " +
-                                "WHERE users.users_id =  " + clsUserListGrid.intUsersId
-                                ));
-
-                            clsUserListGrid.strOrganisation = Convert.ToString(clsUserListGrid.strOrganisation) == "0" ? "Other" : Convert.ToString(clsUserListGrid.strOrganisation);
+                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT organisation_name FROM organisation WHERE organisation_id =  " + Convert.ToString(dataRow["organisation_id"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strOrganisation = (String)dr["organisation_name"]; }
+                            }
+                            else { clsUserListGrid.strOrganisation = "Other"; }
+                            tempDataTable = null;
                         }
                         if (dataRow["user_role_id"] != null)
                         {
-                            clsUserListGrid.strUserRole = Convert.ToString(
-                                clsDatabaseConnectivity.getDataTableBySQLQuery(
-                                "SELECT role_name FROM users INNER JOIN user_role " +
-                                "ON users.user_role_id = user_role.user_role_id " +
-                                "WHERE users_id = " + clsUserListGrid.intUsersId
-                                ));
+                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT role_name FROM user_role WHERE user_role_id = " + Convert.ToString(dataRow["user_role_id"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strUserRole = (String)dr["role_name"]; }
+                            }
+                            else { clsUserListGrid.strUserRole = "Other"; }
+                            tempDataTable = null;
                         }
                         if (dataRow["status"] != null)
                         {
@@ -226,36 +231,9 @@ namespace ProductMate.DatabaseConnectivity
             {
                 clsUserListGrid = null;
                 colUserListGrid = null;
+                tempDataTable = null;
+                dataTable = null;
             }
         }
-
-
-        public string getCreatedByUsername(string strCreatedBy)
-        {
-            string strCreatedByUsername = string.Empty;
-            DataTable dt = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
-            try
-            {
-                dt = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + strCreatedBy);
-
-                foreach (DataRow dataRow in dt.Rows) {
-                    strCreatedByUsername = (String)dataRow["username"];
-                }
-
-                return strCreatedByUsername;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-
-            }
-        }
-
-
-
     }
 }
