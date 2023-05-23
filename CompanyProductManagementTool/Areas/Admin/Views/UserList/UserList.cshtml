@@ -7,8 +7,22 @@
 <!--Form Heading Section-->
 <h3 class="uk-heading-line uk-text-center"><span>User List</span></h3>
 
+<!--Button Section-->
+<hr class="uk-divider-icon">
+<div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnEdit">
+        Edit
+    </button>
+    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnDelete">
+        Delete
+    </button>
+</div>
+<hr class="uk-divider-icon">
+
 <!--Table Section-->
-<table class="uk-table uk-table-hover uk-table-small uk-table-divider uk-margin-large">
+<table class="uk-table" id="UsersList">
     <thead>
         <tr>
             <th><!--Checkbox--></th>
@@ -32,7 +46,7 @@
                 foreach (var clsUserListGrid in Model)
                 {
                     <tr>
-                        <td><input type="checkbox" class="uk-checkbox" id="chkUsersId" value="@clsUserListGrid.intUsersId" /></td>
+                        <td><input type="checkbox" class="uk-checkbox" id="chkUsersId" name="checkBox" value="@clsUserListGrid.intUsersId" /></td>
                         <td>@clsUserListGrid.strFirstName</td>
                         <td>@clsUserListGrid.strLastName</td>
                         <td>@clsUserListGrid.strContact</td>
@@ -55,3 +69,39 @@
         }
     </tbody>
 </table>
+
+<script type="text/javascript">
+
+    //Common function to select single checkbox at a time.
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+    $("#btnDelete").click(function () {
+        try {
+            const intUserID = $("#UsersList td :checkbox:checked").val();
+
+            if (intUserID > 0) {
+
+            }
+            else {
+                UIkit.modal.alert("No User Present In The Grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+</script>
