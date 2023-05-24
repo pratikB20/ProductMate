@@ -235,5 +235,31 @@ namespace ProductMate.DatabaseConnectivity
                 dataTable = null;
             }
         }
+
+        public bool DeleteUser(int intUserID)
+        {
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("DeleteUser", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@User_ID", intUserID);
+
+                con.Open();
+                int i = com.ExecuteNonQuery();
+                con.Close();
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            { throw ex; }
+        }
     }
 }

@@ -19,6 +19,7 @@
         Delete
     </button>
 </div>
+
 <hr class="uk-divider-icon">
 
 <!--Table Section-->
@@ -91,14 +92,37 @@
 
     $("#btnDelete").click(function () {
         try {
-            const intUserID = $("#UsersList td :checkbox:checked").val();
-
+            var intUserID = $("#UsersList td :checkbox:checked").val();
+            var UserConfirmation = false;
             if (intUserID > 0) {
 
+                UserConfirmation = confirm("Are you sure you want to delete the user?");
+
+                if (UserConfirmation) {
+                    $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "POST",
+                        dataType: "json",
+                        data: { "intUserID": intUserID },
+                        url: '@Url.Action("DeleteUser","UserList")',
+                        success: function (data) {
+                            if (data.message == "OK") {
+                                UIkit.modal.alert("User Deleted Successfully!");
+                                window.location.href = '@Url.Action("UserList", "UserList")';
+                            }
+                            else {
+                                UIkit.modal.alert("User not deleted into the system due to technical error");
+                            }
+                        },
+                        error: function (data) { alert("Error-Something bad happened."); }
+                    });
+                }
             }
             else {
                 UIkit.modal.alert("No User Present In The Grid");
             }
+
         }
         catch (ex) {
             throw ex;

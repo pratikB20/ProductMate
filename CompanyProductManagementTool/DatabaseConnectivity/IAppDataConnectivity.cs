@@ -18,6 +18,7 @@ namespace ProductMate.DatabaseConnectivity
         public List<SelectListItem> getUserRoles();
         public Boolean SaveUser(Users clsUsers);
         public List<UserListGrid> getAllUsers();
+        public bool DeleteUser(int intUserID);
 
         //AREA - Customer
         //AREA - Product Support

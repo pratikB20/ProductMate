@@ -35,5 +35,28 @@ namespace ProductMate.Areas.Admin.Controllers
                 ColUserListGrid = null;
             }
         }
+
+        [HttpPost]
+        [Route("DeleteUser")]
+        public IActionResult DeleteUser(int intUserID)
+        {
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            bool IsDeleteCompleted = false;
+            String message = string.Empty;
+            try
+            {
+                IsDeleteCompleted = clsAppDataConnectivity.DeleteUser(intUserID);
+                if (IsDeleteCompleted) { message = "OK"; } else { message = "ERROR"; }
+                return Json(new { message = message });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
     }
 }
