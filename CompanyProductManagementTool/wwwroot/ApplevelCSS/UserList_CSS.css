@@ -1,0 +1,6 @@
+﻿#tblUsersList {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 350px;
+}

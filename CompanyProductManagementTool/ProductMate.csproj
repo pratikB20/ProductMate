@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\ApplevelCSS\UserList_CSS.css" />
     <None Include="wwwroot\css\_Layout.css" />
   </ItemGroup>
 
