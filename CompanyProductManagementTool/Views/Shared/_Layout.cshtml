@@ -378,11 +378,27 @@
                 }
                 else if (@Context.Session.GetInt32("UserRole") == 4)
                 {
-                    <div class="job">IT</div>
+                    <div class="job">IT Development</div>
+                }
+                else if (@Context.Session.GetInt32("UserRole") == 5)
+                {
+                    <div class="job">Sales/Marketing</div>
+                }
+                else if (@Context.Session.GetInt32("UserRole") == 6)
+                {
+                    <div class="job">Accounting</div>
+                }
+                else if (@Context.Session.GetInt32("UserRole") == 7)
+                {
+                    <div class="job">IT Support</div>
+                }
+                else if (@Context.Session.GetInt32("UserRole") == 8)
+                {
+                    <div class="job">Human Resources (HR)</div>
                 }
                 else
                 {
-                    <div class="job">Sales/Marketing</div>
+                    <div class="job">Other</div>
                 }
             </div>
             <i class='bx bx-log-out'></i>
