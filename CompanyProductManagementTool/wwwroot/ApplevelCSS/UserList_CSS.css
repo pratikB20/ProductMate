@@ -4,3 +4,35 @@
     white-space: nowrap;
     height: 350px;
 }
+
+#UsersList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #UsersList th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #902E5D;
+        color: white;
+    }
+
+    #UsersList checkbox {
+        padding: 2px 3px 2px 3px;
+    }
+
+    #UsersList td {
+        padding: 8px;
+    }
+
+    #UsersList tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #UsersList tr:hover {
+        background-color: #ddd;
+    }
+
+    
+ 
