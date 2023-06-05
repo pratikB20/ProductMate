@@ -240,7 +240,7 @@
                     </ul>
                 </li>
             }
-            else if (@Context.Session.GetInt32("UserRole") == 4) //Role - IT Team
+            else if (@Context.Session.GetInt32("UserRole") == 4) //Role - IT Development Team
             {
                 <li>
                     <a href="#">
@@ -297,7 +297,55 @@
                     </ul>
                 </li>
             }
-            else //Role - Sales/Marketing
+            else if (@Context.Session.GetInt32("UserRole") == 5) //Role - Sales/Marketing
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+            else if (@Context.Session.GetInt32("UserRole") == 6) //Role - Accounting
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+            else if (@Context.Session.GetInt32("UserRole") == 7) //Role - IT Support Team
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+            else if (@Context.Session.GetInt32("UserRole") == 8) //Role - Human Resources Team
+            {
+                <li>
+                    <a href="#">
+                        <i class='bx bxs-dashboard'></i>
+                        <span class="link_name">Dashboard</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><a href="@Url.Action("Dashboard","Dashboard")">Dashboard</a></li>
+                    </ul>
+                </li>
+            }
+            else //Role - If new role introduced, add here.
             {
                 <li>
                     <a href="#">
