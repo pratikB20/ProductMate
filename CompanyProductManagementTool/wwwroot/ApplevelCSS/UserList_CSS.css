@@ -5,6 +5,11 @@
     height: 350px;
 }
 
+    #tblUsersList thead th {
+        position: sticky;
+        top: 0;
+    }
+
 #UsersList {
     border-collapse: collapse;
     width: 100%;
