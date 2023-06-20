@@ -261,5 +261,137 @@ namespace ProductMate.DatabaseConnectivity
             catch(Exception ex)
             { throw ex; }
         }
+
+        public Boolean UpdateUser(Users clsUsers)
+        {
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("UpdateUser", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@UserID", clsUsers.intUsersId);
+                com.Parameters.AddWithValue("@FirstName", clsUsers.strFirstName);
+                com.Parameters.AddWithValue("@LastName", clsUsers.strLastName);
+                com.Parameters.AddWithValue("@Contact", clsUsers.strContact);
+                com.Parameters.AddWithValue("@EmailId", clsUsers.strEmailId);
+                com.Parameters.AddWithValue("@Username", clsUsers.strUsername);
+                com.Parameters.AddWithValue("@Password", clsUsers.strPassword);
+                com.Parameters.AddWithValue("@CreateDate", clsUsers.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsUsers.intCreatedBy);
+                com.Parameters.AddWithValue("@OrganisationId", clsUsers.intOrganisationId);
+                com.Parameters.AddWithValue("@UserRoleId", clsUsers.intUserRoleId);
+                com.Parameters.AddWithValue("@Status", clsUsers.intStatus);
+
+                con.Open();
+                int i = com.ExecuteNonQuery();
+                con.Close();
+                if (i >= 1)
+                {
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
+
+        public Users GetUserDetailsByUsersId(int intUsersId)
+        {
+            DataTable dataTable = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            Users clsUser = new Users();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("GetUserDetailsByUsersId", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@UsersID", intUsersId);
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in dataTable.Rows)
+                    {
+                        if (dataRow["users_id"] != null)
+                        {
+                            clsUser.intUsersId = Convert.ToInt32(dataRow["users_id"]);
+                        }
+                        if (dataRow["first_name"] != null)
+                        {
+                            clsUser.strFirstName = Convert.ToString(dataRow["first_name"]);
+                        }
+                        if (dataRow["last_name"] != null)
+                        {
+                            clsUser.strLastName = Convert.ToString(dataRow["last_name"]);
+                        }
+                        if (dataRow["contact"] != null)
+                        {
+                            clsUser.strContact = Convert.ToString(dataRow["contact"]);
+                        }
+                        if (dataRow["email_id"] != null)
+                        {
+                            clsUser.strEmailId = Convert.ToString(dataRow["email_id"]);
+                        }
+                        if (dataRow["username"] != null)
+                        {
+                            clsUser.strUsername = Convert.ToString(dataRow["username"]);
+                        }
+                        if (dataRow["password"] != null)
+                        {
+                            clsUser.strPassword = Convert.ToString(dataRow["password"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsUser.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            clsUser.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                        }
+                        if (dataRow["organisation_id"] != null)
+                        {
+                            clsUser.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
+                        }
+                        if (dataRow["user_role_id"] != null)
+                        {
+                            clsUser.intUserRoleId = Convert.ToInt32(dataRow["intUserRoleId"]);
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsUser.intStatus = Convert.ToInt32(dataRow["status"]);
+                        }
+                    }
+                }
+                else
+                {
+                    clsUser = null;
+                }
+                return clsUser;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsUser = null;
+                dataTable = null;
+            }
+        }
     }
 }

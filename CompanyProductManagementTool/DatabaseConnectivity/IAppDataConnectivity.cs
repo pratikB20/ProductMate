@@ -19,6 +19,8 @@ namespace ProductMate.DatabaseConnectivity
         public Boolean SaveUser(Users clsUsers);
         public List<UserListGrid> getAllUsers();
         public bool DeleteUser(int intUserID);
+        public Boolean UpdateUser(Users clsUsers);
+        public Users GetUserDetailsByUsersId(int intUsersId);
 
         //AREA - Customer
         //AREA - Product Support
