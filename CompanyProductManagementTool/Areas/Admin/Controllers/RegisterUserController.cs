@@ -19,12 +19,29 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("RegisterUser")]
         public IActionResult RegisterUser()
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();          
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            Users clsUser = new Users();
+            int intUsersId = 0;
             try
             {
-                ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
-                ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
-                return View();
+                if((string)TempData["ACTION"] != null)
+                {
+                    TempData["ACTION"] = "Update";
+                    intUsersId = (int)TempData["UserID"];
+                    ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
+                    ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
+                    clsUser = clsAppDataConnectivity.GetUserDetailsByUsersId(intUsersId);
+                    ViewBag.UserDetails = clsUser;
+                    return View();
+                }
+                else
+                {
+                    TempData["ACTION"] = "Save";
+                    ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
+                    ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
+                    ViewBag.UserDetails = null;
+                    return View();
+                }             
             }
             catch (Exception ex)
             {
@@ -32,7 +49,7 @@ namespace ProductMate.Areas.Admin.Controllers
             }
             finally
             {
-                TempData.Keep();
+                //TempData.Keep();
             }
         }
 
@@ -64,6 +81,37 @@ namespace ProductMate.Areas.Admin.Controllers
                 return Json(new { message = message });
             }
             catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateUser")]
+        public IActionResult UpdateUser(Users clsUsers)
+        {
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            Boolean IsUserUpdated = false;
+            String message = string.Empty;
+            try
+            {
+                IsUserUpdated = clsAppDataConnectivity.UpdateUser(clsUsers);
+                if (IsUserUpdated)
+                {
+                    message = "OK";
+                }
+                else
+                {
+                    message = "ERROR";
+                }
+
+                return Json(new { message = message });
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

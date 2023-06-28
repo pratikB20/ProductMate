@@ -12,8 +12,8 @@
 <hr class="uk-divider-icon">
 <div class="uk-margin">
     <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
-            id="btnEdit">
-        Edit
+            id="btnUpdate">
+        Update
     </button>
     <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
             id="btnDelete">
@@ -94,10 +94,37 @@
         }
     });
 
+    $("#btnUpdate").click(function () {
+        try {
+            var intUserID = $("#UsersList td :checkbox:checked").val();
+            if (intUserID > 0) {
+                $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "PUT",
+                        dataType: "json",
+                        data: { "intUserID": intUserID },
+                        url: '@Url.Action("UpdateUser", "UserList")',
+                        success: function (data) {
+                            if (data.message == "OK") {
+                                window.location.href = '@Url.Action("RegisterUser", "RegisterUser")';
+                            }
+                        },
+                        error: function (data) { alert("Error-Something bad happened."); }
+                    });
+            }
+            else {
+                UIkit.modal.alert("Please select at least one record from The grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+
     $("#btnDelete").click(function () {
         try {
             var intUserID = $("#UsersList td :checkbox:checked").val();
-            var UserConfirmation = false;
             if (intUserID > 0) {
 
                 /*UserConfirmation = confirm("Are you sure you want to delete the user?");*/

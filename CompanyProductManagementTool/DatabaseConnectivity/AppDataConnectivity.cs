@@ -369,7 +369,7 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["user_role_id"] != null)
                         {
-                            clsUser.intUserRoleId = Convert.ToInt32(dataRow["intUserRoleId"]);
+                            clsUser.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
                         }
                         if (dataRow["status"] != null)
                         {

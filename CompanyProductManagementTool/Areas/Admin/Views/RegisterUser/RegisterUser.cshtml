@@ -74,6 +74,30 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        var ACTION = '@TempData["ACTION"]';
+        console.log(ACTION);
+        if (ACTION === "Save") {
+            $("#btnSubmit").html('Save');
+        }
+        else if (ACTION === "Update") {
+            $("#btnSubmit").html('Update');
+            //Set user details to update
+
+             $("#txtFirstName").val("@ViewBag.UserDetails.strFirstName");
+             $("#txtLastName").val("@ViewBag.UserDetails.strLastName");
+             $("#txtContact").val("@ViewBag.UserDetails.strContact");
+             $("#txtEmailID").val("@ViewBag.UserDetails.strEmailId");
+             $("#txtUsername").val("@ViewBag.UserDetails.strUsername");
+             $("#txtPassword").val("@ViewBag.UserDetails.strPassword");
+             $("#ddlOrganisation").val("@ViewBag.UserDetails.intOrganisationId").change();
+             $("#ddlUserRole").val("@ViewBag.UserDetails.intUserRoleId").change();
+             $("#ddlStatus").val("@ViewBag.UserDetails.intStatus").change();
+        }
+        else {
+        }
+    });
+
     $("#btnSubmit").click(function () {
         var clsUsers = {
             strFirstName : $("#txtFirstName").val(),
@@ -87,10 +111,19 @@
             intStatus : $("#ddlStatus option:selected").val()
         };
 
+        var ACTION = '@TempData["ACTION"]';
+        var URL;
+        //console.log(ACTION);
+        if (ACTION === "Save") {
+            URL = "/RegisterUser/SaveUser";
+        } else if (ACTION === "Update") {
+            URL = "/RegisterUser/UpdateUser";
+        }
+        else {
+            URL = "";
+        }
 
         var IsValid = validateInputs(clsUsers);
-        console.log(clsUsers);
-        console.log(IsValid);
 
         if (IsValid) {
             $.ajax({
@@ -99,10 +132,18 @@
                     type: "POST",
                     dataType: "json",
                     data: { "clsUsers": clsUsers },
-                    url: '@Url.Action("SaveUser","RegisterUser")',
+                    //url: '@Url.Action("SaveUser","RegisterUser")', //Depending on Save/Update, sending data to appropriate request
+                    url: URL,
                     success: function (data) {
                         if (data.message == "OK") {
-                            UIkit.modal.alert("User Added Successfully!");
+                            if (ACTION === "Save") {
+                                UIkit.modal.alert("User Added Successfully!");
+                            } else if (ACTION === "Update") {
+                                UIkit.modal.alert("User Updated Successfully!");
+                            }
+                            else {
+                                UIkit.modal.alert("No Action Happened!");
+                            }
                         }
                         else {
                             UIkit.modal.alert("User not added into the system due to technical error");
