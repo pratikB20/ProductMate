@@ -154,14 +154,14 @@
         var URL;
         //console.log(ACTION);
         if (ACTION === "Save") {
-            URL = "/RegisterUser/SaveUser";
+            URL = '@Url.Action("SaveUser","RegisterUser")';
         } else if (ACTION === "Update") {
-            URL = "/RegisterUser/UpdateUser";
+            URL = '@Url.Action("UpdateSelectedUsers", "RegisterUser")';
         }
         else {
             URL = "";
         }
-
+        console.table([URL, clsUsers]);
         var IsValid = validateInputs(clsUsers);
 
         if (IsValid) {

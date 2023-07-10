@@ -31,6 +31,7 @@ namespace ProductMate.Areas.Admin.Controllers
                     ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
                     ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
                     clsUser = clsAppDataConnectivity.GetUserDetailsByUsersId(intUsersId);
+                    TempData["UserID"] = intUsersId;
                     //Set Values
                     ViewBag.strFirstName = clsUser.strFirstName;
                     ViewBag.strLastName = clsUser.strLastName;
@@ -68,7 +69,7 @@ namespace ProductMate.Areas.Admin.Controllers
             }
             finally
             {
-                //TempData.Keep();
+                TempData.Keep();
             }
         }
 
@@ -110,14 +111,16 @@ namespace ProductMate.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Route("UpdateUser")]
-        public IActionResult UpdateUser(Users clsUsers)
+        [Route("UpdateSelectedUsers")]
+        public IActionResult UpdateSelectedUsers(Users clsUsers)
         {
             AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Boolean IsUserUpdated = false;
             String message = string.Empty;
             try
             {
+                clsUsers.dteCreateDate = DateTime.Now;
+                clsUsers.intUsersId = (int)TempData["UserID"];
                 IsUserUpdated = clsAppDataConnectivity.UpdateUser(clsUsers);
                 if (IsUserUpdated)
                 {
