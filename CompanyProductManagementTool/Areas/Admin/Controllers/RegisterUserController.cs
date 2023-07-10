@@ -31,7 +31,16 @@ namespace ProductMate.Areas.Admin.Controllers
                     ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
                     ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
                     clsUser = clsAppDataConnectivity.GetUserDetailsByUsersId(intUsersId);
-                    ViewBag.UserDetails = clsUser;
+                    //Set Values
+                    ViewBag.strFirstName = clsUser.strFirstName;
+                    ViewBag.strLastName = clsUser.strLastName;
+                    ViewBag.strContact = clsUser.strContact;
+                    ViewBag.strEmailId = clsUser.strEmailId;
+                    ViewBag.strUsername = clsUser.strUsername;
+                    ViewBag.strPassword = clsUser.strPassword;
+                    ViewBag.intOrganisationId = clsUser.intOrganisationId;
+                    ViewBag.intUserRoleId = clsUser.intUserRoleId;
+                    ViewBag.intStatus = clsUser.intStatus;
                     return View();
                 }
                 else
@@ -39,7 +48,17 @@ namespace ProductMate.Areas.Admin.Controllers
                     TempData["ACTION"] = "Save";
                     ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
                     ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
-                    ViewBag.UserDetails = null;
+                    //Set Null Values
+                    ViewBag.strFirstName = null;
+                    ViewBag.strLastName = null;
+                    ViewBag.strContact = null;
+                    ViewBag.strEmailId = null;
+                    ViewBag.strUsername = null;
+                    ViewBag.strPassword = null;
+                    ViewBag.intOrganisationId = null;
+                    ViewBag.intUserRoleId = null;
+                    ViewBag.intStatus = null;
+
                     return View();
                 }             
             }

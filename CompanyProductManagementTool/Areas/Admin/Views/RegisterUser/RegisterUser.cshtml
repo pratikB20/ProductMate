@@ -3,6 +3,40 @@
 <!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.strFirstName == null)
+    {
+        ViewBag.strFirstName = "";
+    }
+    if (ViewBag.strLastName == null)
+    {
+        ViewBag.strLastName = "";
+    }
+    if (ViewBag.strContact == null)
+    {
+        ViewBag.strContact = "";
+    }
+    if (ViewBag.strEmailId == null)
+    {
+        ViewBag.strEmailId = "";
+    }
+    if (ViewBag.strUsername == null)
+    {
+        ViewBag.strUsername = "";
+    }
+    if (ViewBag.strPassword == null)
+    {
+        ViewBag.strPassword = "";
+    }
+    if (ViewBag.intOrganisationId == null) {
+        ViewBag.intOrganisationId = 0; //Default first dropdown value selection set
+    }
+    if (ViewBag.intUserRoleId == null) {
+        ViewBag.intUserRoleId = 0; //Default first dropdown value selection set
+    }
+    if (ViewBag.intStatus == null) {
+        ViewBag.intStatus = 0; //Default first dropdown value selection set
+    }
 }
 
 <!--Form Heading Section-->
@@ -79,20 +113,25 @@
         console.log(ACTION);
         if (ACTION === "Save") {
             $("#btnSubmit").html('Save');
+            console.log("Hitting Save Section");
         }
         else if (ACTION === "Update") {
             $("#btnSubmit").html('Update');
+            $("#btnReset").html('Back to list');
             //Set user details to update
 
-             $("#txtFirstName").val("@ViewBag.UserDetails.strFirstName");
-             $("#txtLastName").val("@ViewBag.UserDetails.strLastName");
-             $("#txtContact").val("@ViewBag.UserDetails.strContact");
-             $("#txtEmailID").val("@ViewBag.UserDetails.strEmailId");
-             $("#txtUsername").val("@ViewBag.UserDetails.strUsername");
-             $("#txtPassword").val("@ViewBag.UserDetails.strPassword");
-             $("#ddlOrganisation").val("@ViewBag.UserDetails.intOrganisationId").change();
-             $("#ddlUserRole").val("@ViewBag.UserDetails.intUserRoleId").change();
-             $("#ddlStatus").val("@ViewBag.UserDetails.intStatus").change();
+            console.log("Hitting Update Section");
+
+            $("#txtFirstName").val("@ViewBag.strFirstName");
+            $("#txtLastName").val("@ViewBag.strLastName");
+            $("#txtContact").val("@ViewBag.strContact");
+            $("#txtEmailID").val("@ViewBag.strEmailId");
+            $("#txtUsername").val("@ViewBag.strUsername");
+            $("#txtPassword").val("@ViewBag.strPassword");
+            $("#ddlOrganisation").val("@ViewBag.intOrganisationId").change();
+            $("#ddlUserRole").val("@ViewBag.intUserRoleId").change();
+            $("#ddlStatus").val("@ViewBag.intStatus").change();
+
         }
         else {
         }
@@ -155,7 +194,15 @@
     });
 
     $("#btnReset").click(function () {
-        window.location.href = '@Url.Action("RegisterUser", "RegisterUser")';
+        if ($("#btnReset").text === "RESET") {
+            window.location.href = '@Url.Action("RegisterUser", "RegisterUser")';
+        }
+        else if ($("#btnReset").text === "BACK TO LIST") {
+            window.location.href = '@Url.Action("UserList", "UserList")';
+        }
+        else {
+
+        }
     });
 
     function validateInputs(clsUsers) {
