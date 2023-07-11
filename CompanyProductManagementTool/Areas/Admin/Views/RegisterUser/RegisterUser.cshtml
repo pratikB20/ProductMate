@@ -111,11 +111,7 @@
     $(document).ready(function () {
         var ACTION = '@TempData["ACTION"]';
         console.log(ACTION);
-        if (ACTION === "Save") {
-            $("#btnSubmit").html('Save');
-            console.log("Hitting Save Section");
-        }
-        else if (ACTION === "Update") {
+        if (ACTION === "Update") {
             $("#btnSubmit").html('Update');
             $("#btnReset").html('Back to list');
             //Set user details to update
@@ -134,6 +130,7 @@
 
         }
         else {
+            $("#btnSubmit").html('Save');
         }
     });
 
@@ -153,13 +150,11 @@
         var ACTION = '@TempData["ACTION"]';
         var URL;
         //console.log(ACTION);
-        if (ACTION === "Save") {
-            URL = '@Url.Action("SaveUser","RegisterUser")';
-        } else if (ACTION === "Update") {
+        if (ACTION === "Update") {
             URL = '@Url.Action("UpdateSelectedUsers", "RegisterUser")';
         }
         else {
-            URL = "";
+            URL = '@Url.Action("SaveUser","RegisterUser")';
         }
         console.table([URL, clsUsers]);
         var IsValid = validateInputs(clsUsers);
@@ -175,13 +170,11 @@
                     url: URL,
                     success: function (data) {
                         if (data.message == "OK") {
-                            if (ACTION === "Save") {
-                                UIkit.modal.alert("User Added Successfully!");
-                            } else if (ACTION === "Update") {
+                            if (ACTION === "Update") {
                                 UIkit.modal.alert("User Updated Successfully!");
                             }
                             else {
-                                UIkit.modal.alert("No Action Happened!");
+                                UIkit.modal.alert("User Added Successfully!");
                             }
                         }
                         else {

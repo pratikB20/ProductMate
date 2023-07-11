@@ -46,7 +46,7 @@ namespace ProductMate.Areas.Admin.Controllers
                 }
                 else
                 {
-                    TempData["ACTION"] = "Save";
+                    //TempData["ACTION"] = "Save"; //Commented due to null issue while 2nd time coming to this page due to this save action
                     ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
                     ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
                     //Set Null Values
