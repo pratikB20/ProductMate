@@ -227,10 +227,12 @@
             UIkit.modal.alert("Password is mandatory!");
             IsValid = false;
         }
-        else if (clsUsers.intOrganisationId == "") {
-            UIkit.modal.alert("Organisation is mandatory!");
-            IsValid = false;
-        }
+        //Commented Organisation Mandatory Validation - Reason - Since we're tagging organisation to Customer role only. 
+        //Rest other roles are internal for Productmate which should not be tagged as an organisation person.
+        //else if (clsUsers.intOrganisationId == "") {
+        //    UIkit.modal.alert("Organisation is mandatory!");
+        //    IsValid = false;
+        //}
         else if (clsUsers.intUserRoleId == "") {
             UIkit.modal.alert("User Role is mandatory!");
             IsValid = false;
