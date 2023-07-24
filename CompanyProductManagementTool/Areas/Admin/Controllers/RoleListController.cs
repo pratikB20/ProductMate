@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProductMate.Areas.Admin.Controllers
 {
-    [Route("Admin")]
+    [Area("Admin")]
     public class RoleListController : Controller
     {
         [Route("RoleList")]
