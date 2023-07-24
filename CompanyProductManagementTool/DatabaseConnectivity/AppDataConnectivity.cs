@@ -393,5 +393,43 @@ namespace ProductMate.DatabaseConnectivity
                 dataTable = null;
             }
         }
+
+        public Boolean SaveUserRole(UserRole clsUserRole)
+        {
+            Boolean IsUserRoleAdded = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("AddNewUserRole", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@RoleName", clsUserRole.strRoleName);
+                com.Parameters.AddWithValue("@Description", clsUserRole.strDescription);
+                com.Parameters.AddWithValue("@CreateDate", clsUserRole.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsUserRole.intCreatedBy);
+                com.Parameters.AddWithValue("@Status", clsUserRole.intStatus);
+
+                con.Open();
+                int insertCount = com.ExecuteNonQuery();
+                con.Close();
+                if (insertCount >= 1)
+                {
+                    IsUserRoleAdded = true;
+                }
+                else
+                {
+                    IsUserRoleAdded = false;
+                }
+
+                return IsUserRoleAdded;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace ProductMate.DatabaseConnectivity
         public bool DeleteUser(int intUserID);
         public Boolean UpdateUser(Users clsUsers);
         public Users GetUserDetailsByUsersId(int intUsersId);
+        public Boolean SaveUserRole(UserRole clsUserRole);
 
         //AREA - Customer
         //AREA - Product Support
