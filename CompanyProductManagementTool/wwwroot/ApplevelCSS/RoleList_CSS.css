@@ -1,0 +1,40 @@
+﻿#tblRolesList {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 350px;
+}
+
+    #tblRolesList thead th {
+        position: sticky;
+        top: 0;
+    }
+
+#RolesList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #RolesList th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #902E5D;
+        color: white;
+    }
+
+    #RolesList checkbox {
+        padding: 2px 3px 2px 3px;
+    }
+
+    #RolesList td {
+        padding: 8px;
+    }
+
+    #RolesList tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #RolesList tr:hover {
+        background-color: #ddd;
+    }

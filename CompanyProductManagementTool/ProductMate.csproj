@@ -20,12 +20,11 @@
     <Folder Include="Areas\SalesMarketing\Data\" />
     <Folder Include="Areas\SalesMarketing\Models\" />
     <Folder Include="Areas\SalesMarketing\Views\" />
-    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\ApplevelCSS\UserList_CSS.css" />
     <None Include="wwwroot\css\_Layout.css" />
   </ItemGroup>
 

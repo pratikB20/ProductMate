@@ -3,6 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ProductMate.Models;
+using ProductMate.Areas.Admin.Models;
+using System.Data;
+using System.Data.SqlClient;
+using ProductMate.DatabaseConnectivity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ProductMate.Areas.Admin.Controllers
 {
@@ -12,7 +18,23 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("RoleList")]
         public IActionResult RoleList()
         {
-            return View();
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            List<RoleListGrid> ColRoleListGrid = new List<RoleListGrid>();
+            try
+            {
+                ColRoleListGrid = clsAppDataConnectivity.getAllRoles();
+                return View(ColRoleListGrid);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsAppDataConnectivity = null;
+                ColRoleListGrid = null;
+            }
+            
         }
     }
 }

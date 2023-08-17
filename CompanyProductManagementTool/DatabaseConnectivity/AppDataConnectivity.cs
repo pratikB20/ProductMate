@@ -431,5 +431,74 @@ namespace ProductMate.DatabaseConnectivity
 
             }
         }
+
+        public List<RoleListGrid> getAllRoles()
+        {
+            RoleListGrid clsRoleListGrid;
+            List<RoleListGrid> colRoleListGrid = new List<RoleListGrid>();
+            DataTable dataTable = new DataTable();
+            DataTable tempDataTable = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            try
+            {
+                dataTable = clsDatabaseConnectivity.getDataTable("GetAllRoles");
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    foreach (DataRow dataRow in dataTable.Rows)
+                    {
+                        clsRoleListGrid = new RoleListGrid();
+                        if (dataRow["user_role_id"] != null)
+                        {
+                            clsRoleListGrid.intUserRolesId = Convert.ToInt32(dataRow["user_role_id"]);
+                        }
+                        if (dataRow["role_name"] != null)
+                        {
+                            clsRoleListGrid.strRoleName = Convert.ToString(dataRow["role_name"]);
+                        }
+                        if (dataRow["description"] != null)
+                        {
+                            clsRoleListGrid.strDescription = Convert.ToString(dataRow["description"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsRoleListGrid.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsRoleListGrid.strCreatedBy = (String)dr["username"]; }
+                            }
+                            else { clsRoleListGrid.strCreatedBy = "Other"; }
+                            tempDataTable = null;
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsRoleListGrid.strStatus = Convert.ToString(dataRow["status"]) == "0" ? "Inactive" : "Active";
+                        }
+
+                        colRoleListGrid.Add(clsRoleListGrid);
+                        clsRoleListGrid = null;
+                    }
+                }
+                else
+                {
+                    clsRoleListGrid = null;
+                    colRoleListGrid = null;
+                }
+                
+                return colRoleListGrid;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+
+            }
+        }
     }
 }
