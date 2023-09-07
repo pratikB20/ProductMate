@@ -500,5 +500,32 @@ namespace ProductMate.DatabaseConnectivity
 
             }
         }
+
+        public bool DeleteUserRole(int intUserRoleId)
+        {
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("DeleteUserRole", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@User_Role_ID", intUserRoleId);
+                con.Open();
+                int i = com.ExecuteNonQuery();
+                con.Close();
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

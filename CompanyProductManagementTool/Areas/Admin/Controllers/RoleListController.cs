@@ -34,7 +34,29 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsAppDataConnectivity = null;
                 ColRoleListGrid = null;
             }
-            
+        }
+
+        [HttpDelete]
+        [Route("DeleteUserRole")]
+        public ActionResult DeleteUserRole(int intUserRolesId)
+        {
+            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
+            bool IsDeleteCompleted = false;
+            String message = string.Empty;
+            try
+            {
+                IsDeleteCompleted = clsAppDataConnectivity.DeleteUserRole(intUserRolesId);
+                if (IsDeleteCompleted) { message = "OK"; } else { message = "ERROR"; }
+                return Json(new { message = message });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                clsAppDataConnectivity = null;
+            }
         }
     }
 }

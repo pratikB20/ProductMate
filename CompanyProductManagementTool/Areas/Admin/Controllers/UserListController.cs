@@ -56,7 +56,7 @@ namespace ProductMate.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteUser")]
         public IActionResult DeleteUser(int intUserID)
         {

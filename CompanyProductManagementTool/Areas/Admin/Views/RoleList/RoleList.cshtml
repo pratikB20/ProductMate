@@ -83,5 +83,41 @@
         }
     });
 
-
+    $("#btnDelete").click(function () {
+        try {
+            var intUserRolesId = $("#RolesList td :checkbox:checked").val();
+            if (intUserRolesId > 0) {
+                UIkit.modal.confirm("Are you sure you want to delete the user role?").then(function () {
+                    $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "DELETE",
+                        dataType: "json",
+                        data: { "intUserRolesID": intUserRolesId },
+                        url: '@Url.Action("DeleteUserRole","RoleList")',
+                        success: function (data) {
+                            if (data.message == "OK") {
+                                UIkit.modal.alert("User Deleted Successfully!");
+                                window.location.href = '@Url.Action("RoleList", "RoleList")';
+                            }
+                            else {
+                                UIkit.modal.alert("Role not deleted into the system due to technical error");
+                            }
+                        },
+                        error: function (data) {
+                            UIkit.modal.alert("Error-Something bad happened.");
+                        }
+                    });
+                }, function () {
+                    console.log('Delete Rejected');
+                });
+            }
+            else {
+                UIkit.modal.alert("Please select at least one record from The grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
 </script>

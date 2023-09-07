@@ -23,6 +23,7 @@ namespace ProductMate.DatabaseConnectivity
         public Users GetUserDetailsByUsersId(int intUsersId);
         public Boolean SaveUserRole(UserRole clsUserRole);
         public List<RoleListGrid> getAllRoles();
+        public bool DeleteUserRole(int intUserRoleId);
 
         //AREA - Customer
         //AREA - Product Support
