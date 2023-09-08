@@ -16,10 +16,17 @@ namespace ProductMate.Areas.Admin.Controllers
     [Area("Admin")]
     public class RegisterUserController : Controller
     {
+        //Dependency Injection - Data Access Layer
+        private IAppDataConnectivity _IAppDataConnectivity;
+
+        public RegisterUserController(IAppDataConnectivity IAppDataConnectivity)
+        {
+            _IAppDataConnectivity = IAppDataConnectivity;
+        }
+
         [Route("RegisterUser")]
         public IActionResult RegisterUser()
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Users clsUser = new Users();
             int intUsersId = 0;
             try
@@ -28,9 +35,9 @@ namespace ProductMate.Areas.Admin.Controllers
                 {
                     TempData["ACTION"] = "Update";
                     intUsersId = (int)TempData["UserID"];
-                    ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
-                    ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
-                    clsUser = clsAppDataConnectivity.GetUserDetailsByUsersId(intUsersId);
+                    ViewBag.ddlOrganisation = (List<SelectListItem>)_IAppDataConnectivity.getOrganisations();
+                    ViewBag.ddlUserRole = (List<SelectListItem>)_IAppDataConnectivity.getUserRoles();
+                    clsUser = _IAppDataConnectivity.GetUserDetailsByUsersId(intUsersId);
                     TempData["UserID"] = intUsersId;
                     //Set Values
                     ViewBag.strFirstName = clsUser.strFirstName;
@@ -47,8 +54,8 @@ namespace ProductMate.Areas.Admin.Controllers
                 else
                 {
                     //TempData["ACTION"] = "Save"; //Commented due to null issue while 2nd time coming to this page due to this save action
-                    ViewBag.ddlOrganisation = (List<SelectListItem>)clsAppDataConnectivity.getOrganisations();
-                    ViewBag.ddlUserRole = (List<SelectListItem>)clsAppDataConnectivity.getUserRoles();
+                    ViewBag.ddlOrganisation = (List<SelectListItem>)_IAppDataConnectivity.getOrganisations();
+                    ViewBag.ddlUserRole = (List<SelectListItem>)_IAppDataConnectivity.getUserRoles();
                     //Set Null Values
                     ViewBag.strFirstName = null;
                     ViewBag.strLastName = null;
@@ -77,7 +84,6 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("SaveUser")]
         public IActionResult SaveUser(Users clsUsers)
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Boolean IsUserAdded = false;
             String message = string.Empty;
             Users clsLoggedInUser = new Users();
@@ -88,7 +94,7 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsLoggedInUser = HttpContext.Session.GetObjectFromJson<Users>("User");
                 clsUsers.intCreatedBy = clsLoggedInUser.intUsersId;
 
-                IsUserAdded = clsAppDataConnectivity.SaveUser(clsUsers);
+                IsUserAdded = _IAppDataConnectivity.SaveUser(clsUsers);
                 if (IsUserAdded)
                 {
                     message = "OK";
@@ -104,24 +110,19 @@ namespace ProductMate.Areas.Admin.Controllers
             {
                 throw ex;
             }
-            finally
-            {
-
-            }
         }
 
         [HttpPost]
         [Route("UpdateSelectedUsers")]
         public IActionResult UpdateSelectedUsers(Users clsUsers)
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Boolean IsUserUpdated = false;
             String message = string.Empty;
             try
             {
                 clsUsers.dteCreateDate = DateTime.Now;
                 clsUsers.intUsersId = (int)TempData["UserID"];
-                IsUserUpdated = clsAppDataConnectivity.UpdateUser(clsUsers);
+                IsUserUpdated = _IAppDataConnectivity.UpdateUser(clsUsers);
                 if (IsUserUpdated)
                 {
                     message = "OK";
@@ -136,10 +137,6 @@ namespace ProductMate.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-
             }
         }
     }

@@ -15,14 +15,21 @@ namespace ProductMate.Areas.Admin.Controllers
     [Area("Admin")]
     public class UserListController : Controller
     {
+        //Dependency Injection - Data Access Layer
+        private IAppDataConnectivity _IAppDataConnectivity;
+
+        public UserListController(IAppDataConnectivity IAppDataConnectivity) 
+        {
+            _IAppDataConnectivity = IAppDataConnectivity;
+        }
+
         [Route("UserList")]
         public IActionResult UserList()
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             List<UserListGrid> ColUserListGrid = new List<UserListGrid>();
             try
             {
-                ColUserListGrid = clsAppDataConnectivity.getAllUsers();
+                ColUserListGrid = _IAppDataConnectivity.getAllUsers();
                 return View(ColUserListGrid);
             }
             catch(Exception ex)
@@ -31,7 +38,6 @@ namespace ProductMate.Areas.Admin.Controllers
             }
             finally
             {
-                clsAppDataConnectivity = null;
                 ColUserListGrid = null;
             }
         }
@@ -60,22 +66,17 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("DeleteUser")]
         public IActionResult DeleteUser(int intUserID)
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             bool IsDeleteCompleted = false;
             String message = string.Empty;
             try
             {
-                IsDeleteCompleted = clsAppDataConnectivity.DeleteUser(intUserID);
+                IsDeleteCompleted = _IAppDataConnectivity.DeleteUser(intUserID);
                 if (IsDeleteCompleted) { message = "OK"; } else { message = "ERROR"; }
                 return Json(new { message = message });
             }
             catch(Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-
             }
         }
     }

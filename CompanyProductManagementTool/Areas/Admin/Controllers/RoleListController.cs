@@ -15,14 +15,21 @@ namespace ProductMate.Areas.Admin.Controllers
     [Area("Admin")]
     public class RoleListController : Controller
     {
+        //Dependency Injection - Data Access Layer
+        public IAppDataConnectivity _IAppDataConnectivity;
+
+        public RoleListController(IAppDataConnectivity IAppDataConnectivity)
+        {
+            _IAppDataConnectivity = IAppDataConnectivity;
+        }
+
         [Route("RoleList")]
         public IActionResult RoleList()
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             List<RoleListGrid> ColRoleListGrid = new List<RoleListGrid>();
             try
             {
-                ColRoleListGrid = clsAppDataConnectivity.getAllRoles();
+                ColRoleListGrid = _IAppDataConnectivity.getAllRoles();
                 return View(ColRoleListGrid);
             }
             catch (Exception ex)
@@ -31,7 +38,6 @@ namespace ProductMate.Areas.Admin.Controllers
             }
             finally
             {
-                clsAppDataConnectivity = null;
                 ColRoleListGrid = null;
             }
         }
@@ -40,22 +46,17 @@ namespace ProductMate.Areas.Admin.Controllers
         [Route("DeleteUserRole")]
         public ActionResult DeleteUserRole(int intUserRolesId)
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             bool IsDeleteCompleted = false;
             String message = string.Empty;
             try
             {
-                IsDeleteCompleted = clsAppDataConnectivity.DeleteUserRole(intUserRolesId);
+                IsDeleteCompleted = _IAppDataConnectivity.DeleteUserRole(intUserRolesId);
                 if (IsDeleteCompleted) { message = "OK"; } else { message = "ERROR"; }
                 return Json(new { message = message });
             }
             catch(Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-                clsAppDataConnectivity = null;
             }
         }
     }

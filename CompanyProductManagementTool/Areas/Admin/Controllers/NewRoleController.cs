@@ -16,6 +16,14 @@ namespace ProductMate.Areas.Admin.Controllers
     [Area("Admin")]
     public class NewRoleController : Controller
     {
+        //Dependency Injection - Data Access Layer
+        private IAppDataConnectivity _IAppDataConnectivity;
+
+        public NewRoleController(IAppDataConnectivity IAppDataConnectivity)
+        {
+            _IAppDataConnectivity = IAppDataConnectivity;
+        }
+
         [Route("NewRole")]
         public IActionResult NewRole()
         {
@@ -27,17 +35,12 @@ namespace ProductMate.Areas.Admin.Controllers
             {
                 throw ex;
             }
-            finally
-            {
-
-            }
         }
 
         [HttpPost]
         [Route("SaveUserRole")]
         public IActionResult SaveUserRole(UserRole clsUserRole)
         {
-            AppDataConnectivity clsAppDataConnectivity = new AppDataConnectivity();
             Boolean IsUserRoleAdded = false;
             String message = string.Empty;
             Users clsLoggedInUser = new Users();
@@ -48,7 +51,7 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsLoggedInUser = HttpContext.Session.GetObjectFromJson<Users>("User");
                 clsUserRole.intCreatedBy = clsLoggedInUser.intUsersId;
 
-                IsUserRoleAdded = clsAppDataConnectivity.SaveUserRole(clsUserRole);
+                IsUserRoleAdded = _IAppDataConnectivity.SaveUserRole(clsUserRole);
                 if (IsUserRoleAdded)
                 {
                     message = "OK";
@@ -63,10 +66,6 @@ namespace ProductMate.Areas.Admin.Controllers
             catch(Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-
             }
         }
     }
