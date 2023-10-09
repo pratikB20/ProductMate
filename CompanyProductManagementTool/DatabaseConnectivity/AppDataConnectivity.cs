@@ -300,10 +300,6 @@ namespace ProductMate.DatabaseConnectivity
             {
                 throw ex;
             }
-            finally
-            {
-
-            }
         }
 
         public Users GetUserDetailsByUsersId(int intUsersId)
@@ -510,6 +506,105 @@ namespace ProductMate.DatabaseConnectivity
 
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@User_Role_ID", intUserRoleId);
+                con.Open();
+                int i = com.ExecuteNonQuery();
+                con.Close();
+                if (i >= 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public UserRole GetUserRoleDetailsByUserRoleId(int intUserRoleId)
+        {
+            DataTable dataTable = new DataTable();
+            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            UserRole clsUserRole = new UserRole();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("GetUserRoleDetailsByUserRoleId", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@UserRoleID",intUserRoleId);
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                if (dataTable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in dataTable.Rows)
+                    {
+                        if(dataRow["user_role_id"] != null)
+                        {
+                            clsUserRole.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
+                        }
+                        if (dataRow["role_name"] != null)
+                        {
+                            clsUserRole.strRoleName = Convert.ToString(dataRow["role_name"]);
+                        }
+                        if (dataRow["description"] != null)
+                        {
+                            clsUserRole.strDescription = Convert.ToString(dataRow["description"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsUserRole.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            clsUserRole.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsUserRole.intStatus = Convert.ToInt32(dataRow["status"]);
+                        }
+                    }
+                }
+                else
+                {
+                    clsUserRole = null;
+                }
+
+                return clsUserRole;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dataTable = null;
+                clsDatabaseConnectivity = null;
+                clsUserRole = null;
+            }
+        }
+
+        public Boolean UpdateUserRole(UserRole clsUserRole)
+        {
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("UpdateUserRole", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@UserRoleID", clsUserRole.intUserRoleId);
+                com.Parameters.AddWithValue("@RoleName", clsUserRole.strRoleName);
+                com.Parameters.AddWithValue("@Description", clsUserRole.strDescription);
+                com.Parameters.AddWithValue("@CreateDate", clsUserRole.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsUserRole.intCreatedBy);
+                com.Parameters.AddWithValue("@Status", clsUserRole.intStatus);
+
                 con.Open();
                 int i = com.ExecuteNonQuery();
                 con.Close();

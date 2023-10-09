@@ -2,6 +2,15 @@
 <!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.strRoleName == null)
+    {
+        ViewBag.strRoleName = "";
+    }
+    if(ViewBag.strDescription == null)
+    {
+        ViewBag.strDescription = "";
+    }
 }
 
 <!--Form Heading Section-->
@@ -34,6 +43,18 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
+        var ACTION = '@TempData["ACTION"]';
+        if (ACTION === "Update") {
+            $("#btnSubmit").html("Update");
+            $("#btnReset").html("Back to list");
+
+            //Set user role details to update
+            $("#txtRoleName").val("@ViewBag.strRoleName");
+            $("#txtDescription").val("@ViewBag.strDescription");
+        }
+        else {
+            $("#btnSubmit").html('Save');
+        }
     });
 
     $("#btnSubmit").click(function () {
@@ -42,23 +63,41 @@
                 strRoleName : $("#txtRoleName").val(),
                 strDescription : $("#txtDescription").val()
             };
-            console.log(clsUserRole);
+
+            var ACTION = '@TempData["ACTION"]';
+            var URL = "",TYPE = "";
+            if (ACTION === "Update") {
+                URL = '@Url.Action("UpdateSelectedUserRole", "NewRole")';
+                TYPE = "PUT";
+            }
+            else {
+                URL = '@Url.Action("SaveUserRole","NewRole")';
+                TYPE = "POST";
+            }
+
             var IsValid = validateInputs(clsUserRole);
 
             if (IsValid) {
                 $.ajax({
                     contentType: "application/x-www-form-urlencoded",
                     async: false,
-                    type: "POST",
+                    /*type: "POST",*/
+                    type: TYPE,
                     dataType: "json",
                     data: { "clsUserRole": clsUserRole },
-                    url: '@Url.Action("SaveUserRole", "NewRole")', //Depending on Save/Update, sending data to appropriate request
+                    @*url: '@Url.Action("SaveUserRole", "NewRole")', //Depending on Save/Update, sending data to appropriate request*@
+                    url: URL,
                     success: function (data) {
                         if (data.message == "OK") {
-                                UIkit.modal.alert("User Added Successfully!");
+                            if (ACTION === "Update") {
+                                UIkit.modal.alert("User Role Updated Successfully!");
+                            }
+                            else {
+                                UIkit.modal.alert("User Role Added Successfully!");
+                            }
                         }
                         else {
-                            UIkit.modal.alert("User not added into the system due to technical error");
+                            UIkit.modal.alert("User Role not added into the system due to technical error");
                         }
                     },
                     error: function (data) { alert("Error-Something bad happened."); }

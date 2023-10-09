@@ -42,6 +42,26 @@ namespace ProductMate.Areas.Admin.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("UpdateUserRole")]
+        public ActionResult UpdateUserRole(int intUserRolesId)
+        {
+            try
+            {
+                TempData["UserRoleID"] = intUserRolesId;
+                TempData["ACTION"] = "Update";
+                return Json(new { message = "OK" });
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                TempData.Keep();
+            }
+        }
+
         [HttpDelete]
         [Route("DeleteUserRole")]
         public ActionResult DeleteUserRole(int intUserRolesId)
