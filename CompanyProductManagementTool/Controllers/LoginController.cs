@@ -15,7 +15,13 @@ namespace CompanyProductManagementTool.Controllers
 {
     public class LoginController : Controller
     {
-        DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+        //Dependency Injection - Data Access Layer
+        private IAppDataConnectivity _IAppDataConnectivity;
+
+        public LoginController(IAppDataConnectivity IAppDataConnectivity)
+        {
+            _IAppDataConnectivity = IAppDataConnectivity;
+        }
 
         public ActionResult Login()
         {
@@ -28,7 +34,7 @@ namespace CompanyProductManagementTool.Controllers
             Users clsUsers = new Users();
             try
             {
-                clsUsers = clsDatabaseConnectivity.AuthenticateUser(strUsername, strPassword);
+                clsUsers = _IAppDataConnectivity.AuthenticateUser(strUsername, strPassword);
                 
                 if (clsUsers != null)
                 {
@@ -52,7 +58,7 @@ namespace CompanyProductManagementTool.Controllers
             }
             finally
             {
-                TempData.Keep();
+                clsUsers = null;
             }
         }
     }

@@ -13,6 +13,9 @@ namespace ProductMate.DatabaseConnectivity
 {
     public interface IAppDataConnectivity
     {
+        //Global Common Methods
+        public Users AuthenticateUser(string txtUsername, string txtPassword);
+
         //AREA - Admin
         public List<SelectListItem> getOrganisations();
         public List<SelectListItem> getUserRoles();

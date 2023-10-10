@@ -22,14 +22,96 @@ namespace ProductMate.DatabaseConnectivity
             con = new SqlConnection(constr);
         }
 
+        //Common Method to get datatable from SP without parameters
+        public DataTable getDataTable(string StoredProcedureName = "")
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand(StoredProcedureName, con);
+                com.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                return dataTable;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        //Common Method to get datatable from QUERY
+        public DataTable getDataTableBySQLQuery(string strQuery)
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter adp;
+            try
+            {
+                connection();
+                adp = new SqlDataAdapter(strQuery, con);
+                adp.Fill(dt);
+                return dt;
+            }
+            catch (Exception ex) { throw ex; }
+            finally { adp = null; }
+        }
+
+        //To view employee details with generic list     
+        public Users AuthenticateUser(string txtUsername, string txtPassword)
+        {
+            connection();
+            Users clsUsers = new Users();
+            SqlCommand com = new SqlCommand("AuthenticateUser", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            com.Parameters.AddWithValue("@Username", txtUsername);
+            com.Parameters.AddWithValue("@Password", txtPassword);
+            DataTable dataTable = new DataTable();
+
+            con.Open();
+            da.Fill(dataTable);
+            con.Close();
+
+            //Bind EmpModel generic list using dataRow     
+            if (dataTable.Rows.Count > 0)
+            {
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    clsUsers.intUsersId = Convert.ToInt32(dataRow["users_id"]);
+                    clsUsers.strFirstName = Convert.ToString(dataRow["first_name"]);
+                    clsUsers.strLastName = Convert.ToString(dataRow["last_name"]);
+                    clsUsers.strContact = Convert.ToString(dataRow["contact"]);
+                    clsUsers.strEmailId = Convert.ToString(dataRow["email_id"]);
+                    clsUsers.strUsername = Convert.ToString(dataRow["username"]);
+                    clsUsers.strPassword = Convert.ToString(dataRow["password"]);
+                    clsUsers.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                    clsUsers.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                    clsUsers.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
+                    clsUsers.intUserRoleId = Convert.ToInt32(dataRow["user_role_id"]);
+                    clsUsers.intStatus = Convert.ToInt32(dataRow["status"]);
+                }
+            }
+            else
+            {
+                clsUsers = null;
+            }
+
+            return clsUsers;
+        }
+
         public List<SelectListItem> getOrganisations()
         {
             DataTable dataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             List<SelectListItem> organisations = new List<SelectListItem>();
             try
             {
-                dataTable = clsDatabaseConnectivity.getDataTable("GetOrganisations");
+                dataTable = getDataTable("GetOrganisations");
 
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -47,7 +129,7 @@ namespace ProductMate.DatabaseConnectivity
             }
             finally
             {
-                clsDatabaseConnectivity = null;
+                //clsDatabaseConnectivity = null;
                 dataTable = null;
                 organisations = null;
             }
@@ -56,11 +138,11 @@ namespace ProductMate.DatabaseConnectivity
         public List<SelectListItem> getUserRoles()
         {
             DataTable dataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             List<SelectListItem> roles = new List<SelectListItem>();
             try
             {
-                dataTable = clsDatabaseConnectivity.getDataTable("GetUserRoles");
+                dataTable = getDataTable("GetUserRoles");
 
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
@@ -79,7 +161,7 @@ namespace ProductMate.DatabaseConnectivity
             }
             finally
             {
-                clsDatabaseConnectivity = null;
+                //clsDatabaseConnectivity = null;
                 dataTable = null;
                 roles = null;
             }
@@ -135,10 +217,10 @@ namespace ProductMate.DatabaseConnectivity
             List<UserListGrid> colUserListGrid = new List<UserListGrid>();
             DataTable dataTable = new DataTable();
             DataTable tempDataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
             {
-                dataTable = clsDatabaseConnectivity.getDataTable("GetAllUsers");
+                dataTable = getDataTable("GetAllUsers");
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -179,7 +261,7 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["created_by"] != null)
                         {
-                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            tempDataTable = getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
                             if (tempDataTable.Rows.Count > 0)
                             {
                                 foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strCreatedBy = (String)dr["username"]; }
@@ -189,7 +271,7 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["organisation_id"] != null)
                         {
-                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT organisation_name FROM organisation WHERE organisation_id =  " + Convert.ToString(dataRow["organisation_id"]));
+                            tempDataTable = getDataTableBySQLQuery("SELECT organisation_name FROM organisation WHERE organisation_id =  " + Convert.ToString(dataRow["organisation_id"]));
                             if (tempDataTable.Rows.Count > 0)
                             {
                                 foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strOrganisation = (String)dr["organisation_name"]; }
@@ -199,7 +281,7 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["user_role_id"] != null)
                         {
-                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT role_name FROM user_role WHERE user_role_id = " + Convert.ToString(dataRow["user_role_id"]));
+                            tempDataTable = getDataTableBySQLQuery("SELECT role_name FROM user_role WHERE user_role_id = " + Convert.ToString(dataRow["user_role_id"]));
                             if (tempDataTable.Rows.Count > 0)
                             {
                                 foreach (DataRow dr in tempDataTable.Rows) { clsUserListGrid.strUserRole = (String)dr["role_name"]; }
@@ -305,7 +387,7 @@ namespace ProductMate.DatabaseConnectivity
         public Users GetUserDetailsByUsersId(int intUsersId)
         {
             DataTable dataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             Users clsUser = new Users();
             try
             {
@@ -434,10 +516,10 @@ namespace ProductMate.DatabaseConnectivity
             List<RoleListGrid> colRoleListGrid = new List<RoleListGrid>();
             DataTable dataTable = new DataTable();
             DataTable tempDataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             try
             {
-                dataTable = clsDatabaseConnectivity.getDataTable("GetAllRoles");
+                dataTable = getDataTable("GetAllRoles");
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -462,7 +544,7 @@ namespace ProductMate.DatabaseConnectivity
                         }
                         if (dataRow["created_by"] != null)
                         {
-                            tempDataTable = clsDatabaseConnectivity.getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            tempDataTable = getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
                             if (tempDataTable.Rows.Count > 0)
                             {
                                 foreach (DataRow dr in tempDataTable.Rows) { clsRoleListGrid.strCreatedBy = (String)dr["username"]; }
@@ -527,7 +609,7 @@ namespace ProductMate.DatabaseConnectivity
         public UserRole GetUserRoleDetailsByUserRoleId(int intUserRoleId)
         {
             DataTable dataTable = new DataTable();
-            DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
+            //DataConnectivity clsDatabaseConnectivity = new DataConnectivity();
             UserRole clsUserRole = new UserRole();
             try
             {
@@ -585,7 +667,7 @@ namespace ProductMate.DatabaseConnectivity
             finally
             {
                 dataTable = null;
-                clsDatabaseConnectivity = null;
+                //clsDatabaseConnectivity = null;
                 clsUserRole = null;
             }
         }
