@@ -5,13 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Accounting\Controllers\" />
+    <Folder Include="Areas\Accounting\Data\" />
+    <Folder Include="Areas\Accounting\Models\" />
+    <Folder Include="Areas\Accounting\Views\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Customer\Data\" />
     <Folder Include="Areas\Customer\Models\" />
-    <Folder Include="Areas\IT\Controllers\" />
-    <Folder Include="Areas\IT\Data\" />
-    <Folder Include="Areas\IT\Models\" />
-    <Folder Include="Areas\IT\Views\" />
+    <Folder Include="Areas\HumanResources\Controllers\" />
+    <Folder Include="Areas\HumanResources\Data\" />
+    <Folder Include="Areas\HumanResources\Models\" />
+    <Folder Include="Areas\HumanResources\Views\" />
+    <Folder Include="Areas\IT_DEVELOPMENT\Controllers\" />
+    <Folder Include="Areas\IT_DEVELOPMENT\Data\" />
+    <Folder Include="Areas\IT_DEVELOPMENT\Models\" />
+    <Folder Include="Areas\IT_DEVELOPMENT\Views\" />
+    <Folder Include="Areas\IT_SUPPORT\Controllers\" />
+    <Folder Include="Areas\IT_SUPPORT\Data\" />
+    <Folder Include="Areas\IT_SUPPORT\Models\" />
+    <Folder Include="Areas\IT_SUPPORT\Views\" />
     <Folder Include="Areas\ProductSupport\Controllers\" />
     <Folder Include="Areas\ProductSupport\Data\" />
     <Folder Include="Areas\ProductSupport\Models\" />
