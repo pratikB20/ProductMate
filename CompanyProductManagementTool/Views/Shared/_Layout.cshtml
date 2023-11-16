@@ -64,14 +64,13 @@
                         <i class='bx bxs-chevron-down arrow'></i>
                     </div>
                     <ul class="sub-menu">
-                        <li><a class="link_name" href="#">Customer</a></li>
-                        <li><a href="#">Register Organisation</a></li>
-                        <li><a href="#">Organisation List</a></li>
-                        <li><a href="#">Customer Owned Products</a></li>
-                        <li><a href="#">New Delegate</a></li>
-                        <li><a href="#">Delegate List</a></li>
-                        <li><a href="#">Customer Product Proposals</a></li>
-                        <li><a href="#">Customer Feedback</a></li>
+                        <li><a href="@Url.Action("RegisterOrganisation","RegisterOrganisation", new { area="Admin" })">Register Organisation</a></li>
+                        <li><a href="@Url.Action("OrganisationList","OrganisationList", new { area="Admin" })">Organisation List</a></li>
+                        <li><a href="@Url.Action("CustomerOwnedProducts","CustomerOwnedProducts", new { area="Admin" })">Customer Owned Products</a></li>
+                        <li><a href="@Url.Action("NewDelegate","NewDelegate", new { area="Admin" })">New Delegate</a></li>
+                        <li><a href="@Url.Action("DelegateList","DelegateList", new { area="Admin" })">Delegate List</a></li>
+                        <li><a href="@Url.Action("CustomerProductProposals","CustomerProductProposals", new { area="Admin" })">Customer Product Proposals</a></li>
+                        <li><a href="@Url.Action("CustomerFeedback","CustomerFeedback", new { area="Admin" })">Customer Feedback</a></li>
                     </ul>
                 </li>
                 <!--Product Support Section-->
@@ -85,12 +84,12 @@
                     </div>
                     <ul class="sub-menu">
                         <li><a class="link_name" href="#">Product Support</a></li>
-                        <li><a href="#">Product Support Exec Requests</a></li>
-                        <li><a href="#">Add Product</a></li>
-                        <li><a href="#">Product List</a></li>
-                        <li><a href="#">New Case</a></li>
-                        <li><a href="#">Unassigned Case</a></li>
-                        <li><a href="#">Case History</a></li>
+                        <li><a href="@Url.Action("ProductSupportExecRequest","ProductSupportExecRequest", new { area="Admin" })">Product Support Exec Requests</a></li>
+                        <li><a href="@Url.Action("AddProduct","AddProduct", new { area="Admin" })">Add Product</a></li>
+                        <li><a href="@Url.Action("ProductList","ProductList", new { area="Admin" })">Product List</a></li>
+                        <li><a href="@Url.Action("NewCase","NewCase", new { area="Admin" })">New Case</a></li>
+                        <li><a href="@Url.Action("UnassignedCases","UnassignedCases", new { area="Admin" })">Unassigned Case</a></li>
+                        <li><a href="@Url.Action("CaseHistory","CaseHistory", new { area="Admin" })">Case History</a></li>
                     </ul>
                 </li>
                 <!--IT Section-->
@@ -104,9 +103,9 @@
                     </div>
                     <ul class="sub-menu">
                         <li><a class="link_name" href="#">IT</a></li>
-                        <li><a href="#">Knowledge Articles</a></li>
-                        <li><a href="#">Knowledge Articles Dashboard</a></li>
-                        <li><a href="#">IT Tech Onboard Proposals</a></li>
+                        <li><a href="@Url.Action("KnowledgeArticles","KnowledgeArticles", new { area="Admin" })">Knowledge Articles</a></li>
+                        <li><a href="@Url.Action("KnowledgeArticlesDashboard","KnowledgeArticlesDashboard", new { area="Admin" })">Knowledge Articles Dashboard</a></li>
+                        <li><a href="@Url.Action("ITTechOnboardProposals","ITTechOnboardProposals", new { area="Admin" })">IT Tech Onboard Proposals</a></li>
                     </ul>
                 </li>
             }
