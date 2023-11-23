@@ -74,14 +74,8 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsUserRole.intCreatedBy = clsLoggedInUser.intUsersId;
 
                 IsUserRoleAdded = _IAppDataConnectivity.SaveUserRole(clsUserRole);
-                if (IsUserRoleAdded)
-                {
-                    message = "OK";
-                }
-                else
-                {
-                    message = "ERROR";
-                }
+
+                message = (IsUserRoleAdded) ? "OK" : "ERROR";
 
                 return Json(new { message = message });
             }
@@ -102,14 +96,8 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsUserRole.dteCreateDate = DateTime.Now;
                 clsUserRole.intUserRoleId = (int)TempData["UserRoleID"];
                 IsUserRoleUpdated = _IAppDataConnectivity.UpdateUserRole(clsUserRole);
-                if (IsUserRoleUpdated)
-                {
-                    message = "OK";
-                }
-                else
-                {
-                    message = "ERROR";
-                }
+
+                message = (IsUserRoleUpdated) ? "OK" : "ERROR";
 
                 return Json(new { message = message });
             }

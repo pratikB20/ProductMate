@@ -95,14 +95,8 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsUsers.intCreatedBy = clsLoggedInUser.intUsersId;
 
                 IsUserAdded = _IAppDataConnectivity.SaveUser(clsUsers);
-                if (IsUserAdded)
-                {
-                    message = "OK";
-                }
-                else
-                {
-                    message = "ERROR";
-                }
+
+                message = (IsUserAdded) ? "OK" : "ERROR";
 
                 return Json(new { message = message });
             }
@@ -123,14 +117,8 @@ namespace ProductMate.Areas.Admin.Controllers
                 clsUsers.dteCreateDate = DateTime.Now;
                 clsUsers.intUsersId = (int)TempData["UserID"];
                 IsUserUpdated = _IAppDataConnectivity.UpdateUser(clsUsers);
-                if (IsUserUpdated)
-                {
-                    message = "OK";
-                }
-                else
-                {
-                    message = "ERROR";
-                }
+
+                message = (IsUserUpdated) ? "OK" : "ERROR";
 
                 return Json(new { message = message });
             }

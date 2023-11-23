@@ -188,26 +188,16 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@Status", clsUsers.intStatus);
 
                 con.Open();
-                int insertCount = com.ExecuteNonQuery();
+                int intInsertCount = com.ExecuteNonQuery();
                 con.Close();
-                if (insertCount >= 1)
-                {
-                    IsUserAdded = true;
-                }
-                else
-                {
-                    IsUserAdded = false;
-                }
+                
+                IsUserAdded = (intInsertCount >= 1) ? true : false;
 
                 return IsUserAdded;
             }
             catch(Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-
             }
         }
 
@@ -320,6 +310,7 @@ namespace ProductMate.DatabaseConnectivity
 
         public bool DeleteUser(int intUserID)
         {
+            Boolean IsUserDeleted = false;
             try
             {
                 connection();
@@ -329,16 +320,12 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@User_ID", intUserID);
 
                 con.Open();
-                int i = com.ExecuteNonQuery();
+                int intDeleteCount = com.ExecuteNonQuery();
                 con.Close();
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+
+                IsUserDeleted = (intDeleteCount >= 1) ? true : false;
+
+                return IsUserDeleted;
             }
             catch(Exception ex)
             { throw ex; }
@@ -346,6 +333,7 @@ namespace ProductMate.DatabaseConnectivity
 
         public Boolean UpdateUser(Users clsUsers)
         {
+            Boolean IsUserUpdated = false;
             try
             {
                 connection();
@@ -366,17 +354,12 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@Status", clsUsers.intStatus);
 
                 con.Open();
-                int i = com.ExecuteNonQuery();
+                int intUpdateCount = com.ExecuteNonQuery();
                 con.Close();
-                if (i >= 1)
-                {
 
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                IsUserUpdated = (intUpdateCount >= 1) ? true : false;
+
+                return IsUserUpdated;
             }
             catch(Exception ex)
             {
@@ -487,16 +470,10 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@Status", clsUserRole.intStatus);
 
                 con.Open();
-                int insertCount = com.ExecuteNonQuery();
+                int intInsertCount = com.ExecuteNonQuery();
                 con.Close();
-                if (insertCount >= 1)
-                {
-                    IsUserRoleAdded = true;
-                }
-                else
-                {
-                    IsUserRoleAdded = false;
-                }
+
+                IsUserRoleAdded = (intInsertCount >= 1) ? true : false;
 
                 return IsUserRoleAdded;
             }
@@ -581,6 +558,7 @@ namespace ProductMate.DatabaseConnectivity
 
         public bool DeleteUserRole(int intUserRoleId)
         {
+            Boolean IsUserRoleDeleted = false;
             try
             {
                 connection();
@@ -589,16 +567,12 @@ namespace ProductMate.DatabaseConnectivity
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@User_Role_ID", intUserRoleId);
                 con.Open();
-                int i = com.ExecuteNonQuery();
+                int intDeleteCount = com.ExecuteNonQuery();
                 con.Close();
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+
+                IsUserRoleDeleted = (intDeleteCount >= 1) ? true : false;
+
+                return IsUserRoleDeleted;
             }
             catch(Exception ex)
             {
@@ -674,6 +648,7 @@ namespace ProductMate.DatabaseConnectivity
 
         public Boolean UpdateUserRole(UserRole clsUserRole)
         {
+            Boolean IsUserRoleUpdated = false;
             try
             {
                 connection();
@@ -688,16 +663,41 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@Status", clsUserRole.intStatus);
 
                 con.Open();
-                int i = com.ExecuteNonQuery();
+                int intUpdateCount = com.ExecuteNonQuery();
                 con.Close();
-                if (i >= 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+
+                IsUserRoleUpdated = (intUpdateCount >= 1) ? true : false;
+
+                return IsUserRoleUpdated;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Boolean SaveDelegate(Delegates clsDelegates)
+        {
+            Boolean IsDelegateAdded = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("AddNewDelegate", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@DelegateName",clsDelegates.strDelegateName);
+                com.Parameters.AddWithValue("@DelegateContact", clsDelegates.strDelegateContact);
+                com.Parameters.AddWithValue("@DelegateEmailId", clsDelegates.strDelegateEmailId);
+                com.Parameters.AddWithValue("@CreateDate", clsDelegates.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsDelegates.intCreatedBy);
+                com.Parameters.AddWithValue("@Status", clsDelegates.intStatus);
+
+                con.Open();
+                int intInsertCount = com.ExecuteNonQuery();
+                con.Close();
+                
+                IsDelegateAdded = (intInsertCount >= 1) ? true : false;
+
+                return IsDelegateAdded;
             }
             catch(Exception ex)
             {
