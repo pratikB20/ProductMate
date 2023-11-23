@@ -1,4 +1,56 @@
 ﻿<!--Import Layout in every page.-->
+@model IEnumerable<ProductMate.Areas.Admin.Models.DelegateListGrid>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="./ApplevelCSS/DelegateList_CSS.css" />
+
+<!--Form Heading Section-->
+<h3 class="uk-heading-line uk-text-center"><span>Delegate List</span></h3>
+
+<!--Button Section-->
+<hr class="uk-divider-icon" />
+<div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnUpdate">
+        Update
+    </button>
+    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnDelete">
+        Delete
+    </button>
+</div>
+
+<div id="tblDelegateList">
+    <table id="DelegatesList">
+        <thead>
+            <tr>
+                <th><!--Checkbox--></th>
+                <th>Delegate Name</th>
+                <th>Delegate Contact</th>
+                <th>Delegate Email ID</th>
+                <th>Created By</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                if (Model.Count() != 0)
+                {
+                    foreach (var clsDelegateListGrid in Model)
+                    {
+                        <tr>
+                            <td><input type="checkbox" class="uk-checkbox" id="chkDelegatesId" name="checkBox" value="@clsDelegateListGrid.intDelegateId" /></td>
+                            <td>@clsDelegateListGrid.strDelegateName</td>
+                            <td>@clsDelegateListGrid.strDelegateContact</td>
+                            <td>@clsDelegateListGrid.strDelegateEmailId</td>
+                            <td>@clsDelegateListGrid.strCreatedBy</td>
+                            <td>@clsDelegateListGrid.strStatus</td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,40 @@
+﻿#tblDelegateList {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 350px;
+}
+
+    #tblDelegateList thead th {
+        position: sticky;
+        top: 0;
+    }
+
+#DelegatesList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #DelegatesList th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #902E5D;
+        color: white;
+    }
+
+    #DelegatesList checkbox {
+        padding: 2px 3px 2px 3px;
+    }
+
+    #DelegatesList td {
+        padding: 8px;
+    }
+
+    #DelegatesList tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #DelegatesList tr:hover {
+        background-color: #ddd;
+    }

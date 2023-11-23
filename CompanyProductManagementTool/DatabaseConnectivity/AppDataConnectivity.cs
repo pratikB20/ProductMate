@@ -552,7 +552,7 @@ namespace ProductMate.DatabaseConnectivity
             }
             finally
             {
-
+                colRoleListGrid = null;
             }
         }
 
@@ -702,6 +702,79 @@ namespace ProductMate.DatabaseConnectivity
             catch(Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public List<DelegateListGrid> getAllDelegates()
+        {
+            DelegateListGrid clsDelegateListgrid;
+            List<DelegateListGrid> colDelegateListGrid = new List<DelegateListGrid>();
+            DataTable datatable = new DataTable();
+            DataTable tempDataTable = new DataTable();
+            try
+            {
+                datatable = getDataTable("GetAllDelegates");
+
+                if(datatable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in datatable.Rows)
+                    {
+                        clsDelegateListgrid = new DelegateListGrid();
+
+                        if(dataRow["delegate_id"] != null)
+                        {
+                            clsDelegateListgrid.intDelegateId = Convert.ToInt32(dataRow["delegate_id"]);
+                        }
+                        if (dataRow["delegate_name"] != null)
+                        {
+                            clsDelegateListgrid.strDelegateName = Convert.ToString(dataRow["delegate_name"]);
+                        }
+                        if (dataRow["delegate_contact"] != null)
+                        {
+                            clsDelegateListgrid.strDelegateContact = Convert.ToString(dataRow["delegate_contact"]);
+                        }
+                        if (dataRow["delegate_email_id"] != null)
+                        {
+                            clsDelegateListgrid.strDelegateEmailId = Convert.ToString(dataRow["delegate_email_id"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsDelegateListgrid.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if(dataRow["created_by"] != null)
+                        {
+                            tempDataTable = getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            if(tempDataTable.Rows.Count > 0)
+                            {
+                                foreach(DataRow dr in tempDataTable.Rows) { clsDelegateListgrid.strCreatedBy = (string)dr["username"]; }
+                            }
+                            else { clsDelegateListgrid.strCreatedBy = "Other"; }
+                            tempDataTable = null;
+                        }
+                        if(dataRow["status"] != null)
+                        {
+                            clsDelegateListgrid.strStatus = Convert.ToString(dataRow["status"]) == "0" ? "Inactive" : "Active";
+                        }
+
+                        colDelegateListGrid.Add(clsDelegateListgrid);
+                        clsDelegateListgrid = null;
+                    }
+                }
+                else
+                {
+                    clsDelegateListgrid = null;
+                    colDelegateListGrid = null;
+                }
+
+                return colDelegateListGrid;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                colDelegateListGrid = null;
             }
         }
     }

@@ -30,6 +30,7 @@ namespace ProductMate.DatabaseConnectivity
         public UserRole GetUserRoleDetailsByUserRoleId(int intUserRoleId);
         public Boolean UpdateUserRole(UserRole clsUserRole);
         public Boolean SaveDelegate(Delegates clsDelegates);
+        public List<DelegateListGrid> getAllDelegates();
 
         //AREA - Customer
         //AREA - Product Support
