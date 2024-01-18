@@ -15,6 +15,7 @@ namespace ProductMate.DatabaseConnectivity
     {
         //Global Common Methods
         public Users AuthenticateUser(string txtUsername, string txtPassword);
+        public void RecordUserSession(int intUserID, DateTime? dteSessionStart, DateTime? dteSessionEnd, string strRemarks);
 
         //AREA - Admin
         public List<SelectListItem> getOrganisations();

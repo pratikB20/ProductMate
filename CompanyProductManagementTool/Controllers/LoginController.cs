@@ -45,6 +45,24 @@ namespace CompanyProductManagementTool.Controllers
                     //Below way is used to store the large objects such as class object with data or collections
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "User", clsUsers);
 
+                    //Record user session to track user activity details
+                    string strRemarks = String.Empty;
+                    
+                    switch(clsUsers.intUserRoleId)
+                    {
+                        case 1: strRemarks = "Administrator Role Logged In"; break;
+                        case 2: strRemarks = "Customer Role Logged In"; break;
+                        case 3: strRemarks = "Product Role Logged In"; break;
+                        case 4: strRemarks = "IT Development Role Logged In"; break;
+                        case 5: strRemarks = "Sales & Marketing Role Logged In"; break;
+                        case 6: strRemarks = "Accounting Role Logged In"; break;
+                        case 7: strRemarks = "IT Support Role Logged In"; break;
+                        case 8: strRemarks = "Human Resource (HR) Role Logged In"; break;
+                        default: strRemarks = "Unidentified User Role Logged In"; break;
+                    }
+
+                    _IAppDataConnectivity.RecordUserSession(clsUsers.intUsersId, DateTime.Now, DateTime.Now, strRemarks) ;
+
                     return Json(new { message = "FOUND", redirectUrl = Url.Action("Dashboard", "Dashboard") });
                 }
                 else

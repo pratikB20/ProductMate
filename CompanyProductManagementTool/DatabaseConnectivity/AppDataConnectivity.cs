@@ -104,6 +104,29 @@ namespace ProductMate.DatabaseConnectivity
             return clsUsers;
         }
 
+        //User Login session tracking
+        public void RecordUserSession(int intUserID, DateTime? dteSessionStart, DateTime? dteSessionEnd, string strRemarks)
+        {
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("RecordUserSession", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@UsersId", intUserID);
+                com.Parameters.AddWithValue("@SessionStart", dteSessionStart);
+                com.Parameters.AddWithValue("@SessionEnd", dteSessionStart);
+                com.Parameters.AddWithValue("@Remarks", strRemarks);
+
+                con.Open();
+                com.ExecuteNonQuery();
+                con.Close();
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<SelectListItem> getOrganisations()
         {
             DataTable dataTable = new DataTable();
