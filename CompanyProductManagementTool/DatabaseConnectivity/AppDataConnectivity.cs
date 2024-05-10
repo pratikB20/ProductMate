@@ -800,5 +800,64 @@ namespace ProductMate.DatabaseConnectivity
                 colDelegateListGrid = null;
             }
         }
+
+        public List<SelectListItem> getDelegates()
+        {
+            DataTable dataTable = new DataTable();
+            List<SelectListItem> delegates = new List<SelectListItem>(); 
+            try
+            {
+                dataTable = getDataTable("GetDelegates");
+
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    delegates.Add(new SelectListItem { 
+                        Text = dataRow["delegate_name"].ToString(),
+                        Value = dataRow["delegate_id"].ToString()
+                    });
+                }
+
+                return delegates;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dataTable = null;
+                delegates = null;
+            }
+        }
+
+        public Boolean SaveOrganisation(Organisation clsOrganisation)
+        {
+            Boolean IsOrganisationAdded = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("AddNewOrganisation", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("OrganisationName", clsOrganisation.strOrganisationName);
+                com.Parameters.AddWithValue("DelegateId", clsOrganisation.intDelegateId); ;
+                com.Parameters.AddWithValue("@CreateDate", clsOrganisation.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsOrganisation.intCreatedBy);
+                com.Parameters.AddWithValue("@ContractFromDate", clsOrganisation.dteContractFromDate);
+                com.Parameters.AddWithValue("@ContractToDate", clsOrganisation.dteContractToDate);
+                com.Parameters.AddWithValue("@Status", clsOrganisation.intStatus);
+
+                con.Open();
+                int intInsertCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsOrganisationAdded = (intInsertCount >= 1) ? true : false;
+
+                return IsOrganisationAdded;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace ProductMate.DatabaseConnectivity
         public Boolean UpdateUserRole(UserRole clsUserRole);
         public Boolean SaveDelegate(Delegates clsDelegates);
         public List<DelegateListGrid> getAllDelegates();
+        public List<SelectListItem> getDelegates();
+        public Boolean SaveOrganisation(Organisation clsOrganisation);
 
         //AREA - Customer
         //AREA - Product Support
