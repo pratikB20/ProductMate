@@ -1,4 +1,158 @@
 ﻿<!--Import Layout in every page.-->
+@model IEnumerable<ProductMate.Areas.Admin.Models.OrganisationListGrid>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="~/ApplevelCSS/OrganisationList_CSS.css" />
+
+<!--Form Heading Section-->
+<h3 class="uk-heading-line uk-text-center"><span>Organisation List</span></h3>
+
+<!--Button Section-->
+<hr class="uk-divider-icon">
+<div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnUpdate">
+        Update
+    </button>
+    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnDelete">
+        Delete
+    </button>
+</div>
+
+<hr class="uk-divider-icon">
+
+<!--Table Section-->
+<div id="tblOrganisationList">
+    <table id="OrganisationList">
+        <thead>
+            <tr>
+                <th><!--Checkbox--></th>
+                <th>Organisation Name</th>
+                <th>Delegate Name</th>
+                <th>Contract From Date</th>
+                <th>Contract To Date</th>
+                <th>Create Date</th>
+                <th>Created By</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model != null)
+            {
+                if(Model.Count() != 0)
+                {
+                    foreach(var clsOrganisationListGrid in Model)
+                    {
+                        <tr>
+                            <td><input type="checkbox" class="uk-checkbox" id="chkOrganisationId" name="checkBox" value="@clsOrganisationListGrid.intOrganisationId" /></td>
+                            <td>@clsOrganisationListGrid.strOrganisationName</td>
+                            <td>@clsOrganisationListGrid.strDelegateName</td>
+                            <td>@clsOrganisationListGrid.dteContractFromDate</td>
+                            <td>@clsOrganisationListGrid.dteContractToDate</td>
+                            <td>@clsOrganisationListGrid.dteContractToDate</td>
+                            <td>@clsOrganisationListGrid.strCreatedBy</td>
+                            <td>@clsOrganisationListGrid.strStatus</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td rowspan="8">Currently no Organisation present</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    //Common function to select single checkbox at a time.
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+    $("#btnUpdate").click(function () {
+        try {
+            var intOrganisationId = $("#OrganisationList td :checkbox:checked").val();
+
+            if (intOrganisationId > 0) {
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    type: "PUT",
+                    dataType: "json",
+                    data: { "intOrganisationId": intOrganisationId },
+                    url: '@Url.Action("UpdateOrganisation","OrganisationList")',
+                    success: function (data) {
+                        if (data.message == "OK") {
+                            window.location.href = '@Url.Action("RegisterOrganisation", "RegisterOrganisation")';
+                        }
+                    },
+                    error: function (data) {
+                        UIkit.modal.alert("Error-Something bad happened.");
+                    }
+                });
+            }
+            else {
+                UIKit.modal.alert("Please select at least one record from the grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+
+    $("#btnDelete").click(function () {
+        try {
+            var intOrganisationId = $("#OrganisationList td :checkbox:checked").val();
+            if (intOrganisationId > 0) {
+                UIkit.modal.alert("Are you sure you want to delete the organisation?").then(function () {
+                    $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "DELETE",
+                        dataType: "json",
+                        data: { "intOrganisationId": intOrganisationId },
+                        url: '@Url.Action("DeleteOrganisation","OrganisationList")',
+                        success: function (data) {
+                            if (data.message == "OK") {
+                                UIkit.modal.alert("Organisation Deleted Successfully!");
+                                window.location.href = '@Url.Action("OrganisationList", "OrganisationList")';
+                            }
+                            else {
+                                UIKit.modal.alert("Organisation not deleted into the system due to technical error");
+                            }
+                        },
+                        error: function (data) {
+                            UIkit.modal.alert("Error-Something bad happened");
+                        }
+                    });
+                }, function () {
+                    console.log("Delete Rejected");
+                });
+            }
+            else {
+                UIkit.modal.alert("Please select at least one record from the grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+</script>

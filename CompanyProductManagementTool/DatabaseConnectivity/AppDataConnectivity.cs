@@ -844,7 +844,7 @@ namespace ProductMate.DatabaseConnectivity
                 com.Parameters.AddWithValue("@CreatedBy", clsOrganisation.intCreatedBy);
                 com.Parameters.AddWithValue("@ContractFromDate", clsOrganisation.dteContractFromDate);
                 com.Parameters.AddWithValue("@ContractToDate", clsOrganisation.dteContractToDate);
-                com.Parameters.AddWithValue("@Status", clsOrganisation.intStatus);
+                com.Parameters.AddWithValue("@OrganisationStatus", clsOrganisation.intOrganisationStatus);
 
                 con.Open();
                 int intInsertCount = com.ExecuteNonQuery();
@@ -857,6 +857,216 @@ namespace ProductMate.DatabaseConnectivity
             catch(Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public List<OrganisationListGrid> getAllOrganisations()
+        {
+            OrganisationListGrid clsOrganisationListGrid;
+            List<OrganisationListGrid> ColOrganisationListGrid = new List<OrganisationListGrid>();
+            DataTable dataTable = new DataTable();
+            DataTable tempDataTable = new DataTable();
+            try
+            {
+                dataTable = getDataTable("GetAllOrganisations");
+
+                if(dataTable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in dataTable.Rows)
+                    {
+                        clsOrganisationListGrid = new OrganisationListGrid();
+
+                        if(dataRow["organisation_id"] != null)
+                        {
+                            clsOrganisationListGrid.intOrganisationId = Convert.ToInt32(dataRow["organisation_id"]);
+                        }
+                        if (dataRow["organisation_name"] != null)
+                        {
+                            clsOrganisationListGrid.strOrganisationName = Convert.ToString(dataRow["organisation_name"]);
+                        }
+                        if (dataRow["delegate_id"] != null)
+                        {
+                            tempDataTable = getDataTableBySQLQuery("SELECT delegate_name FROM delegates WHERE delegate_id = " + Convert.ToString(dataRow["delegate_id"]));
+                            if(tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsOrganisationListGrid.strDelegateName = (string)dr["delegate_name"]; }
+                            }
+                            else { clsOrganisationListGrid.strDelegateName = "Other"; }
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsOrganisationListGrid.strStatus = Convert.ToString(dataRow["organisation_status"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            tempDataTable = getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsOrganisationListGrid.strCreatedBy = (string)dr["username"]; }
+                            }
+                            else { clsOrganisationListGrid.strCreatedBy = "Other"; }
+                            tempDataTable = null;
+                        }
+                        if (dataRow["contract_from_date"] != null)
+                        {
+                            clsOrganisationListGrid.dteContractFromDate = Convert.ToDateTime(dataRow["contract_from_date"]);
+                        }
+                        if (dataRow["contract_to_date"] != null)
+                        {
+                            clsOrganisationListGrid.dteContractToDate = Convert.ToDateTime(dataRow["contract_to_date"]);
+                        }
+                        if (dataRow["organisation_status"] != null)
+                        {
+                            clsOrganisationListGrid.strStatus = Convert.ToString(dataRow["organisation_status"]) == "0" ? "Inactive" : "Active";
+                        }
+
+                        ColOrganisationListGrid.Add(clsOrganisationListGrid);
+                        clsOrganisationListGrid = null;
+                    }
+                }
+                else
+                {
+                    clsOrganisationListGrid = null;
+                    ColOrganisationListGrid = null;
+                }
+
+                return ColOrganisationListGrid;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                ColOrganisationListGrid = null;
+            }
+        }
+
+        public Boolean DeleteOrganisation(int intOrganisationId)
+        {
+            Boolean IsOrganisationDeleted = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("DeleteOrganisation", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Organisation_ID", intOrganisationId);
+                con.Open();
+                int intDeleteCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsOrganisationDeleted = (intDeleteCount > 0) ? true : false;
+
+                return IsOrganisationDeleted;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Boolean UpdateOrganisation(Organisation clsOrganisation)
+        {
+            Boolean IsOrganisationUpdated = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("UpdateOrganisation", con);
+
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@OrganisationId", clsOrganisation.intOranisationId);
+                com.Parameters.AddWithValue("@OrganisationName", clsOrganisation.strOrganisationName);
+                com.Parameters.AddWithValue("@DelegateId", clsOrganisation.intDelegateId);
+                com.Parameters.AddWithValue("@CreateDate", clsOrganisation.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsOrganisation.intCreatedBy);
+                com.Parameters.AddWithValue("@ContractFromDate", clsOrganisation.dteContractFromDate);
+                com.Parameters.AddWithValue("@ContractToDate", clsOrganisation.dteContractToDate);
+                com.Parameters.AddWithValue("@OrganisationStatus", clsOrganisation.intOrganisationStatus);
+
+                con.Open();
+                int intUpdateCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsOrganisationUpdated = (intUpdateCount > 0) ? true : false;
+
+                return IsOrganisationUpdated;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Organisation GetOrganisationDetailsByOrganisationId(int intOrganisationId)
+        {
+            DataTable dataTable = new DataTable();
+            Organisation clsOrganisation = new Organisation();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("GetOrganisationDetailsByOrganisationId", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@OrganisationID", intOrganisationId);
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                if(dataTable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in dataTable.Rows)
+                    {
+                        if(dataRow["organisation_id"] != null)
+                        {
+                            clsOrganisation.intOranisationId = Convert.ToInt32(dataRow["organisation_id"]);
+                        }
+                        if (dataRow["organisation_name"] != null)
+                        {
+                            clsOrganisation.strOrganisationName = Convert.ToString(dataRow["organisation_name"]);
+                        }
+                        if (dataRow["delegate_id"] != null)
+                        {
+                            clsOrganisation.intDelegateId = Convert.ToInt32(dataRow["delegate_id"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsOrganisation.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            clsOrganisation.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                        }
+                        if (dataRow["contract_from_date"] != null)
+                        {
+                            clsOrganisation.dteContractFromDate = Convert.ToDateTime(dataRow["contract_from_date"]);
+                        }
+                        if (dataRow["contract_to_date"] != null)
+                        {
+                            clsOrganisation.dteContractToDate = Convert.ToDateTime(dataRow["contract_to_date"]);
+                        }
+                        if (dataRow["organisation_status"] != null)
+                        {
+                            clsOrganisation.intOrganisationStatus = Convert.ToInt32(dataRow["organisation_status"]);
+                        }
+                    }
+                }
+                else
+                {
+                    clsOrganisation = null;
+                }
+
+                return clsOrganisation;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dataTable = null;
+                clsOrganisation = null;
             }
         }
     }

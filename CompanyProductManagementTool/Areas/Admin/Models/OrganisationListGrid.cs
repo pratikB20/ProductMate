@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProductMate.Models
+namespace ProductMate.Areas.Admin.Models
 {
-    public class Organisation
+    public class OrganisationListGrid
     {
-        public int intOranisationId { get; set; }
+        public int intOrganisationId { get; set; }
         public string strOrganisationName { get; set; }
-        public int intDelegateId { get; set; }
+        public string strDelegateName { get; set; }
         public DateTime dteContractFromDate { get; set; }
         public DateTime dteContractToDate { get; set; }
         public DateTime dteCreateDate { get; set; }
-        public int intCreatedBy { get; set; }
-        public int intOrganisationStatus { get; set; }
+        public string strCreatedBy { get; set; }
+        public string strStatus { get; set; }
     }
 }

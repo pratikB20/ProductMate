@@ -34,6 +34,11 @@ namespace ProductMate.DatabaseConnectivity
         public List<DelegateListGrid> getAllDelegates();
         public List<SelectListItem> getDelegates();
         public Boolean SaveOrganisation(Organisation clsOrganisation);
+        public List<OrganisationListGrid> getAllOrganisations();
+        public Boolean DeleteOrganisation(int intOrganisationId);
+        public Boolean UpdateOrganisation(Organisation organisation);
+        public Organisation GetOrganisationDetailsByOrganisationId(int intOrganisationId);
+
 
         //AREA - Customer
         //AREA - Product Support

@@ -2,6 +2,27 @@
 <!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if(ViewBag.strOrganisationName == null)
+    {
+        ViewBag.strOrganisationName = "";
+    }
+    if (ViewBag.intDelegateId == null)
+    {
+        ViewBag.intDelegateId = 0;
+    }
+    if (ViewBag.intContractTenure == null)
+    {
+        ViewBag.intContractTenure = 1; //Set Default as 1 since first default is "1 - Year Plan"
+    }
+    if(ViewBag.intOrganisationStatus == null)
+    {
+        ViewBag.intOrganisationStatus = 0;
+    }
+    if(ViewBag.dteContractFromDate == null)
+    {
+        ViewBag.dteContractFromDate = ""; //Date variable keep it empty since its textbox datepicker.
+    }
 }
 
 <!--Form Heading Section-->
@@ -61,6 +82,27 @@
     $(document).ready(function () {
         //Setting up DatePicker Component from JqueryUI library
         $("#dteContractFromDate").datepicker();
+
+        var ACTION = '@TempData["ACTION"]';
+        console.log(ACTION);
+
+        if (ACTION == "Update") {
+            $("#btnSubmit").html('Update');
+            $("#btnReset").html('Back to list');
+
+            //Set Organisation details to update
+            console.log("Hitting Update Section");
+
+            $("#txtOrganisationName").val("@ViewBag.strOrganisationName");
+            $("#ddlDelegate").val("@ViewBag.intDelegateId");
+            $("#ddlContractTenurePlan").val("@ViewBag.intContractTenure");
+            $("#ddlStatus").val("@ViewBag.intOrganisationStatus");
+            $("#dteContractFromDate").val("@ViewBag.dteContractFromDate");
+
+        }
+        else {
+            $("#btnSumbit").html('Save');
+        }
     });
 
     $("#btnSubmit").click(function () {
@@ -69,10 +111,21 @@
                 strOrganisationName: $("#txtOrganisationName").val(),
                 intDelegateId: $("#ddlDelegate option:selected").val(),
                 dteContractFromDate: $("#dteContractFromDate").val(),
-                intStatus: $("#ddlStatus option:selected").val()
+                intOrganisationStatus: $("#ddlStatus option:selected").val()
             };
 
             var intContractTenure = $("#ddlContractTenurePlan option:selected").val();
+
+            var ACTION = '@TempData["ACTION"]';
+            var URL = "", TYPE = "";
+            if (ACTION === "Update") {
+                URL = '@Url.Action("UpdateSelectedOrganisation", "RegisterOrganisation")';
+                TYPE = "PUT";
+            }
+            else {
+                URL = '@Url.Action("SaveOrganisation", "RegisterOrganisation")';
+                TYPE = "POST";
+            }
 
             var IsValid = validateInputs(clsOrganisation, intContractTenure);
 
@@ -80,14 +133,19 @@
                 $.ajax({
                     contentType: "application/x-www-form-urlencoded",
                     async: false,
-                    type: "POST",
+                    type: TYPE,
                     dataType: "json",
                     data: { "clsOrganisation": clsOrganisation, "intContractTenure": intContractTenure },
-                    url: '@Url.Action("SaveOrganisation", "RegisterOrganisation")', //Depending on Save/Update, sending data to appropriate request
-                    //url: URL,
+                    //url: '@Url.Action("SaveOrganisation", "RegisterOrganisation")', //Depending on Save/Update, sending data to appropriate request
+                    url: URL,
                     success: function (data) {
                         if (data.message == "OK") {
-                            UIkit.modal.alert("Organisation Added Successfully!");
+                            if (ACTION === "Update") {
+                                UIkit.modal.alert("Organisation Updated Successfully!");
+                            }
+                            else {
+                                UIkit.modal.alert("Organisation Added Successfully!");
+                            }                   
                         }
                         else {
                             UIkit.modal.alert("Organisation not added into the system due to technical error");

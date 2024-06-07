@@ -1,0 +1,40 @@
+﻿#tblOrganisationList {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 350px;
+}
+
+    #tblOrganisationList thead th {
+        position: sticky;
+        top: 0;
+    }
+
+#OrganisationList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #OrganisationList th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #902E5D;
+        color: white;
+    }
+
+    #OrganisationList checkbox {
+        padding: 2px 3px 2px 3px;
+    }
+
+    #OrganisationList td {
+        padding: 8px;
+    }
+
+    #OrganisationList tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #OrganisationList tr:hover {
+        background-color: #ddd;
+    }
