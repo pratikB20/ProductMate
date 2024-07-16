@@ -38,7 +38,7 @@ namespace ProductMate.Areas.Admin.Controllers
             }
             finally
             {
-
+                //Release memory here in Finally block.
             }
         }
     }
