@@ -58,7 +58,7 @@ namespace ProductMate.DatabaseConnectivity
                 return dt;
             }
             catch (Exception ex) { throw ex; }
-            finally { adp = null; }
+            finally { adp = null; dt = null; }
         }
 
         //To view employee details with generic list     
@@ -728,6 +728,74 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
+        public Delegates getDelegatesDetailsByDelegateId(int intDelegateId)
+        {
+            DataTable dataTable = new DataTable();
+            Delegates clsDelegates = new Delegates();
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("GetDelegatesDetailsByDelegateId", con);
+                com.Parameters.AddWithValue("DelegateId", intDelegateId);
+                com.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter da = new SqlDataAdapter(com);
+
+                con.Open();
+                da.Fill(dataTable);
+                con.Close();
+
+                if(dataTable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in dataTable.Rows)
+                    {
+                        if (dataRow["delegate_id"] != null)
+                        {
+                            clsDelegates.intDelegatesId = Convert.ToInt32(dataRow["delegate_id"]);
+                        }
+                        if (dataRow["delegate_name"] != null)
+                        {
+                            clsDelegates.strDelegateName = Convert.ToString(dataRow["delegate_name"]);
+                        }
+                        if (dataRow["delegate_contact"] != null)
+                        {
+                            clsDelegates.strDelegateContact = Convert.ToString(dataRow["delegate_contact"]);
+                        }
+                        if (dataRow["delegate_email_id"] != null)
+                        {
+                            clsDelegates.strDelegateEmailId = Convert.ToString(dataRow["delegate_email_id"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsDelegates.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            clsDelegates.intCreatedBy = Convert.ToInt32(dataRow["created_by"]);
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsDelegates.intStatus = Convert.ToInt32(dataRow["status"]);
+                        }
+                    }
+                }
+                else
+                {
+                    clsDelegates = null;
+                }
+
+                return clsDelegates;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dataTable = null;
+                clsDelegates = null;
+            }
+        }
+
         public List<DelegateListGrid> getAllDelegates()
         {
             DelegateListGrid clsDelegateListgrid;
@@ -801,6 +869,47 @@ namespace ProductMate.DatabaseConnectivity
             }
         }
 
+        public int DeleteDelegate(int intDelegateId)
+        {
+            int intDelegateDeleteStatusCode = 0;
+            int intDelegateAssociationCountForOrganisation = 0;
+            DataTable dtDelegateAssociationCountForOrganisation = new DataTable();
+            try
+            {
+                dtDelegateAssociationCountForOrganisation = getDataTableBySQLQuery("SELECT COUNT(*) as Delegate_Count_For_Organisation FROM organisation WHERE delegate_id = " + intDelegateId);
+
+                //Business logic 
+                // Case 1) If Delegate is associated with any existing active organisation, we can't delete it until that delegate is inactive.
+                // Case 2) If Delegate is not associated with any existing active organisation, we can delete it.
+
+                intDelegateAssociationCountForOrganisation = dtDelegateAssociationCountForOrganisation.Rows[0].Field<int>("Delegate_Count_For_Organisation");
+
+                if(intDelegateAssociationCountForOrganisation <= 0) // Case : 2 : Delete Delegate
+                {
+                    connection();
+                    SqlCommand com = new SqlCommand("DeleteDelegate", con);
+
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@DelegateId", intDelegateId);
+                    con.Open();
+                    intDelegateDeleteStatusCode = com.ExecuteNonQuery();
+                    con.Close();
+
+                    intDelegateDeleteStatusCode = 1;
+                }
+                else // Case : 1 : Don't Delete Delegate
+                {
+                    intDelegateDeleteStatusCode = 2;
+                }
+
+                return intDelegateDeleteStatusCode;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<SelectListItem> getDelegates()
         {
             DataTable dataTable = new DataTable();
@@ -827,6 +936,37 @@ namespace ProductMate.DatabaseConnectivity
             {
                 dataTable = null;
                 delegates = null;
+            }
+        }
+
+        public Boolean UpdateDelegate(Delegates clsDelegates)
+        {
+            Boolean IsDelegateUpdated = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("UpdateDelegate", con);
+                
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("DelegateId",clsDelegates.intDelegatesId);
+                com.Parameters.AddWithValue("DelegateName",clsDelegates.strDelegateName);
+                com.Parameters.AddWithValue("DelegateContact",clsDelegates.strDelegateContact);
+                com.Parameters.AddWithValue("DelegateEmailId",clsDelegates.strDelegateEmailId);
+                com.Parameters.AddWithValue("Status", clsDelegates.intStatus);
+                com.Parameters.AddWithValue("CreateDate",clsDelegates.dteCreateDate);
+                com.Parameters.AddWithValue("CreatedBy",clsDelegates.intCreatedBy);
+
+                con.Open();
+                int intUpdateCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsDelegateUpdated = (intUpdateCount >= 1) ? true : false;
+
+                return IsDelegateUpdated;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
         }
 

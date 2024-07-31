@@ -54,3 +54,98 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+
+    //Common function to select single checkbox at a time.
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+    $("#btnUpdate").click(function () {
+        try {
+            var intDelegateId = $("#DelegatesList td :checkbox:checked").val();
+            if (intDelegateId > 0) {
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    type: "PUT",
+                    dataType: "json",
+                    data: { "intDelegateId": intDelegateId },
+                    url: '@Url.Action("UpdateDelegate","DelegateList")',
+                    success: function (data) {
+                        if (data.message == "OK") {
+                            window.location.href = '@Url.Action("NewDelegate","NewDelegate")';
+                        }
+                    },
+                    error: function (data) {
+                        UIKit.modal.alert("Error-Something bad happened.");
+                    }
+                });
+            }
+            else {
+                UIKit.modal.alert("Please select at least one record from the grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+
+    $("#btnDelete").click(function () {
+        try {
+            var intDelegateId = $("#DelegatesList td :checkbox:checked").val();
+            if (intDelegateId > 0) {
+                UIkit.modal.alert("Are you sure you want to delete the delegate?").then(function () {
+                    $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "DELETE",
+                        dataType: "json",
+                        data: { "intDelegateId": intDelegateId },
+                        url: '@Url.Action("DeleteDelegate","DelegateList")',
+                        success: function (data) {
+                            if (data.message == "DELEGATE_DELETED") {
+                                UIkit.modal.alert("Delegate Deleted Successfully!");
+                                window.location.href = '@Url.Action("DelegateList","DelegateList")';
+                            }
+                            else if (data.message == "DELEGATE_NOT_DELETED") {
+                                UIkit.modal.alert("Delegate Not Deleted Since Delegate Is Already Associated With Some Other Organisations!");
+                                window.location.href = '@Url.Action("DelegateList","DelegateList")';
+                            }
+                            else {
+                                UIkit.modal.alert("Delegate not deleted into the system due to technical error");
+                            }
+                        },
+                        error: function (data) {
+                            UIkit.modal.alert("Error-Something bad happened");
+                        }
+                    });
+                }, function () {
+                    console.log("Delete Rejected");
+                });
+            }
+            else {
+                UIKit.modal.alert("Please select at least one record from the grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+
+</script>
+
+
