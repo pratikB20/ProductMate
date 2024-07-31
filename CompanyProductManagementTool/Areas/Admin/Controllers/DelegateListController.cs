@@ -41,5 +41,47 @@ namespace ProductMate.Areas.Admin.Controllers
                 //Release memory here in Finally block.
             }
         }
+
+        [HttpPut]
+        [Route("UpdateDelegate")]
+        public ActionResult UpdateDelegate(int intDelegateId)
+        {
+            try
+            {
+                TempData["DelegateId"] = intDelegateId;
+                TempData["ACTION"] = "Update";
+                return Json(new { message = "OK" });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteDelegate")]
+        public ActionResult DeleteDelegate(int intDelegateId)
+        {
+            int intDeleteCompletionStatusCode = 0;
+            String message = string.Empty;
+            try
+            {
+                intDeleteCompletionStatusCode = _IAppDataConnectivity.DeleteDelegate(intDelegateId);
+                if(intDeleteCompletionStatusCode == 1)
+                {
+                    message = "DELEGATE_DELETED"; //Delegate Deleted
+                }
+                else
+                {
+                    message = "DELEGATE_NOT_DELETED"; //Delegate Not Deleted
+                }
+
+                return Json(new { message = message });
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

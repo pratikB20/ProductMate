@@ -2,6 +2,23 @@
 <!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if(ViewBag.strDelegateName == null)
+    {
+        ViewBag.strDelegateName = "";
+    }
+    if(ViewBag.strDelegateContact == null)
+    {
+        ViewBag.strDelegateContact = "";
+    }
+    if(ViewBag.strDelegateEmailId == null)
+    {
+        ViewBag.strDelegateEmailId = "";
+    }
+    if(ViewBag.intStatus == null)
+    {
+        ViewBag.intStatus = 0;
+    }
 }
 
 <!--Form Heading Section-->
@@ -49,6 +66,20 @@
 
     $(document).ready(function () {
 
+        var ACTION = '@TempData["ACTION"]';
+
+        if (ACTION == "Update") {
+            $("#btnSubmit").html('Update');
+            $("#btnReset").html('Back to list');
+
+            $("#txtDelegateName").val("@ViewBag.strDelegateName");
+            $("#txtDelegateContact").val("@ViewBag.strDelegateContact");
+            $("#txtDelegateEmailId").val("@ViewBag.strDelegateEmailId");
+            $("#ddlStatus").val("@ViewBag.intStatus");
+        }
+        else {
+            $("#btnSubmit").html('Save');
+        }
     });
 
     $("#btnSubmit").click(function () {
@@ -58,20 +89,37 @@
             strDelegateEmailId: $("#txtDelegateEmailId").val(),
             intStatus: $("#ddlStatus option:selected").val()
         };
+        
+        var ACTION = '@TempData["ACTION"]';
+        var URL = "", TYPE = "";
+        if (ACTION === "Update") {
+            URL = '@Url.Action("UpdateSelectedDelegate", "NewDelegate")';
+            TYPE = "PUT";
+        }
+        else {
+            URL = '@Url.Action("SaveDelegate","NewDelegate")';
+            TYPE = "POST";
+        }
 
         var IsValid = validateInputs(clsDelegates);
-
+        console.table([ACTION, URL, TYPE, IsValid]);
         if (IsValid) {
             $.ajax({
                 contentType: "application/x-www-form-urlencoded",
                 async: false,
-                type: "POST",
+                type: TYPE,
                 dataType: "json",
                 data: { "clsDelegates": clsDelegates },
-                url: '@Url.Action("SaveDelegate","NewDelegate")',
+                //url: '@Url.Action("SaveDelegate","NewDelegate")', //Depending on Save/Update, sending data to appropriate request.
+                url: URL,
                 success: function (data) {
                     if (data.message == "OK") {
-                        UIkit.modal.alert("Delegate Added Successfully!");
+                        if (ACTION === "Update") {
+                            UIkit.modal.alert("Delegate Updated Successfully!");
+                        }
+                        else {
+                            UIkit.modal.alert("Delegate Added Successfully!");
+                        }                   
                     }
                     else {
                         UIkit.modal.alert("Delegate not added into the system due to technical error");
