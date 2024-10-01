@@ -103,7 +103,6 @@ namespace ProductMate.DatabaseConnectivity
 
             return clsUsers;
         }
-
         //User Login session tracking
         public void RecordUserSession(int intUserID, DateTime? dteSessionStart, DateTime? dteSessionEnd, string strRemarks)
         {
@@ -126,7 +125,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public List<SelectListItem> getOrganisations()
         {
             DataTable dataTable = new DataTable();
@@ -157,7 +155,6 @@ namespace ProductMate.DatabaseConnectivity
                 organisations = null;
             }
         }
-
         public List<SelectListItem> getUserRoles()
         {
             DataTable dataTable = new DataTable();
@@ -189,7 +186,6 @@ namespace ProductMate.DatabaseConnectivity
                 roles = null;
             }
         }
-
         public Boolean SaveUser(Users clsUsers)
         {
             Boolean IsUserAdded = false;
@@ -223,7 +219,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public List<UserListGrid> getAllUsers()
         {
             UserListGrid clsUserListGrid;
@@ -330,7 +325,6 @@ namespace ProductMate.DatabaseConnectivity
                 dataTable = null;
             }
         }
-
         public bool DeleteUser(int intUserID)
         {
             Boolean IsUserDeleted = false;
@@ -353,7 +347,6 @@ namespace ProductMate.DatabaseConnectivity
             catch(Exception ex)
             { throw ex; }
         }
-
         public Boolean UpdateUser(Users clsUsers)
         {
             Boolean IsUserUpdated = false;
@@ -389,7 +382,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public Users GetUserDetailsByUsersId(int intUsersId)
         {
             DataTable dataTable = new DataTable();
@@ -477,7 +469,6 @@ namespace ProductMate.DatabaseConnectivity
                 dataTable = null;
             }
         }
-
         public Boolean SaveUserRole(UserRole clsUserRole)
         {
             Boolean IsUserRoleAdded = false;
@@ -509,7 +500,6 @@ namespace ProductMate.DatabaseConnectivity
 
             }
         }
-
         public List<RoleListGrid> getAllRoles()
         {
             RoleListGrid clsRoleListGrid;
@@ -578,7 +568,6 @@ namespace ProductMate.DatabaseConnectivity
                 colRoleListGrid = null;
             }
         }
-
         public bool DeleteUserRole(int intUserRoleId)
         {
             Boolean IsUserRoleDeleted = false;
@@ -602,7 +591,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public UserRole GetUserRoleDetailsByUserRoleId(int intUserRoleId)
         {
             DataTable dataTable = new DataTable();
@@ -668,7 +656,6 @@ namespace ProductMate.DatabaseConnectivity
                 clsUserRole = null;
             }
         }
-
         public Boolean UpdateUserRole(UserRole clsUserRole)
         {
             Boolean IsUserRoleUpdated = false;
@@ -698,7 +685,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public Boolean SaveDelegate(Delegates clsDelegates)
         {
             Boolean IsDelegateAdded = false;
@@ -727,7 +713,6 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
-
         public Delegates getDelegatesDetailsByDelegateId(int intDelegateId)
         {
             DataTable dataTable = new DataTable();
@@ -978,8 +963,8 @@ namespace ProductMate.DatabaseConnectivity
                 connection();
                 SqlCommand com = new SqlCommand("AddNewOrganisation", con);
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("OrganisationName", clsOrganisation.strOrganisationName);
-                com.Parameters.AddWithValue("DelegateId", clsOrganisation.intDelegateId); ;
+                com.Parameters.AddWithValue("@OrganisationName", clsOrganisation.strOrganisationName);
+                com.Parameters.AddWithValue("@DelegateId", clsOrganisation.intDelegateId); ;
                 com.Parameters.AddWithValue("@CreateDate", clsOrganisation.dteCreateDate);
                 com.Parameters.AddWithValue("@CreatedBy", clsOrganisation.intCreatedBy);
                 com.Parameters.AddWithValue("@ContractFromDate", clsOrganisation.dteContractFromDate);
@@ -1207,6 +1192,34 @@ namespace ProductMate.DatabaseConnectivity
             {
                 dataTable = null;
                 clsOrganisation = null;
+            }
+        }
+        public Boolean SaveProduct(Product clsProduct)
+        {
+            Boolean IsProductAdded = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("AddNewProduct", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@ProductName", clsProduct.strProductName);
+                com.Parameters.AddWithValue("@Description", clsProduct.strDescription);
+                com.Parameters.AddWithValue("@CreateDate", clsProduct.dteCreateDate);
+                com.Parameters.AddWithValue("@CreatedBy", clsProduct.intCreatedBy);
+                com.Parameters.AddWithValue("@ProductPrice", clsProduct.dblProductPrice);
+                com.Parameters.AddWithValue("@Status", clsProduct.intStatus);
+
+                con.Open();
+                int intInsertCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsProductAdded = (intInsertCount > 0) ? true : false;
+
+                return IsProductAdded;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
             }
         }
     }
