@@ -1,5 +1,88 @@
-﻿
+﻿@model ProductMate.Models.Product;
 <!--Import Layout in every page.-->
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<!--Form Heading Section-->
+<h3 class="uk-heading-line uk-text-center"><span>Add Product</span></h3>
+
+<!--Form Section-->
+<div class="uk-grid-column-small uk-grid-row-small uk-child-width-1-2@s uk-child-width-1-3@s uk-child-width-1-4@s" uk-grid>
+    <div class="uk-flex-column">
+        @Html.Label("Product Name")
+        @Html.TextBoxFor(m => m.strProductName, new { @class = "uk-input uk-form-small", @id = "txtProductName" })
+    </div>
+    <div class="uk-flex-column">
+        @Html.Label("Product Description")
+        @Html.TextAreaFor(m => m.strDescription, new { @class = "uk-input uk-form-small", @id = "txtProductDescription" })
+    </div>
+    <div class="uk-flex-column">
+        @Html.Label("Product Price")
+        @Html.TextBoxFor(m => m.dblProductPrice, new { @class = "uk-input uk-form-small", @id = "txtProductPrice" })
+    </div>
+    <div class="uk-flex-column">
+        @Html.Label("Status")
+        <div class="uk-form-controls">
+            @Html.DropDownList("ddlStatus", new List<SelectListItem>
+            {
+               new SelectListItem {Text = "Active", Value = "1"},
+               new SelectListItem {Text = "Inactive", Value = "0"}
+            }, "Select Status", new { @class = "uk-select uk-form-small", @id = "ddlStatus" })
+        </div>
+    </div>
+</div>
+
+<!--Button Section-->
+<div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnSubmit">
+        Submit
+    </button>
+    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnReset">
+        Reset
+    </button>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+            try {
+
+                var clsProduct = {
+                    strProductName : $("#txtProductName").val(),
+                    strDescription: $("#txtProductDescription").val(),
+                    dblProductPrice: $("#txtProductPrice").val(),
+                    intStatus: $("#ddlStatus option:selected").val()
+                }
+
+                $.ajax({
+                    contentType: "application/x-www-form-urlencoded",
+                    async: false,
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "clsProduct": clsProduct
+                    },
+                    url: '@Url.Action("SaveProduct", "AddProduct")',
+                    success: function (data) {
+                        if (data.message == "OK") {
+                            UIkit.modal.alert("Product Added Successfully!");
+                        }
+                        else {
+                            UIkit.modal.alert("Product not added into the system due to technical error");
+                        }
+                    },
+                    error: function (data) { alert("Error-Something bad happened."); }
+                });
+            }
+            catch (ex) {
+                throw ex;
+            }
+
+        });
+    });
+</script>
