@@ -1,4 +1,125 @@
 ﻿<!--Import Layout in every page.-->
+@model IEnumerable<ProductMate.Areas.Admin.Models.ProductListGrid>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="./ApplevelCSS/ProductList_CSS.css" />
+
+<!--Form Heading Section-->
+<h3 class="uk-heading-line uk-text-center"><span>Product List</span></h3>
+
+<!--Button Section-->
+<hr class="uk-divider-icon" />
+<div class="uk-margin">
+    <button class="uk-button uk-button-primary uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnUpdate">
+        Update
+    </button>
+    <button class="uk-button uk-button-danger uk-button-small uk-margin-small-left uk-margin-small-right"
+            id="btnDelete">
+        Delete
+    </button>
+</div>
+
+<div id="tblProductList">
+    <table id="ProductList">
+        <thead>
+            <tr>
+                <th><!--Checkbox--></th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Create Date</th>
+                <th>Created By</th>
+                <th>Product Price</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model != null)
+            {
+                if(Model.Count() != 0)
+                {
+                    foreach(var clsProductListGrid in Model)
+                    {
+                        <tr>
+                            <td><input type="checkbox" class="uk-checkbox" id="chkProductId" name="checkbox" value="@clsProductListGrid.intProductId" /></td>
+                            <td>@clsProductListGrid.strProductName</td>
+                            <td>@clsProductListGrid.strDescription</td>
+                            <td>@clsProductListGrid.dteCreateDate</td>
+                            <td>@clsProductListGrid.strCreatedBy</td>
+                            <td>@clsProductListGrid.dblProductPrice</td>
+                            <td>@clsProductListGrid.strStatus</td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+
+    //Common function to select single checkbox at a time.
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+    $("#btnUpdate").click(function () {
+        try {
+
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+
+    $("#btnDelete").click(function () {
+        try {
+            var intProductId = $("#ProductList td :checkbox:checked").val();
+            if (intProductId) {
+                UIkit.modal.alert("Are you sure you want to delete the product?").then(function () {
+                    $.ajax({
+                        contentType: "application/x-www-form-urlencoded",
+                        async: false,
+                        type: "DELETE",
+                        dataType: "json",
+                        data: { "intProductId": intProductId },
+                        url: '@Url.Action("DeleteProduct","ProductList")',
+                        success: function (data) {
+                            if (data.message == "OK") {
+                                UIkit.modal.alert("Product Deleted Successfully!");
+                                window.location.href = '@Url.Action("ProductList", "ProductList")';
+                            }
+                            else {
+                                UIkit.modal.alert("Product not deleted into the system due to technical error");
+                            }
+                        },
+                        error: function (data) {
+                            UIkit.modal.alert("Error-Something bad happened");
+                        }
+                    });
+                }, function () {
+                    console.log("Delete Rejected");
+                });
+            }
+            else {
+                UIkit.modal.alert("Please select at least one record from the grid");
+            }
+        }
+        catch (ex) {
+            throw ex;
+        }
+    });
+</script>
