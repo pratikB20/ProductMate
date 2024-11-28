@@ -1,0 +1,46 @@
+﻿#tblProductList {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    height: 350px;
+}
+
+#tblProductList thead th {
+    position: sticky;
+    top: 0;
+}
+
+#ProductList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #ProductList th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #902E5D;
+        color: white;
+    }
+
+    #ProductList checkbox {
+        padding: 2px 3px 2px 3px;
+    }
+
+    #ProductList td {
+        padding: 8px;
+        height: 100%;
+    }
+
+    #ProductList tbody tr td {
+        padding: 8px;
+        height: 100%;
+    }
+
+    #ProductList tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #ProductList tr:hover {
+        background-color: #ddd;
+    }

@@ -1222,5 +1222,95 @@ namespace ProductMate.DatabaseConnectivity
                 throw ex;
             }
         }
+        public List<ProductListGrid> getAllProducts()
+        {
+            ProductListGrid clsProductListGrid;
+            List<ProductListGrid> colProductListGrid = new List<ProductListGrid>();
+            DataTable dataTable = new DataTable();
+            DataTable tempDataTable = new DataTable();
+            try
+            {
+                dataTable = getDataTable("GetAllProducts");
+
+                if(dataTable.Rows.Count > 0)
+                {
+                    foreach(DataRow dataRow in dataTable.Rows)
+                    {
+                        clsProductListGrid = new ProductListGrid();
+
+                        if (dataRow["product_id"] != null)
+                        {
+                            clsProductListGrid.intProductId = Convert.ToInt32(dataRow["product_id"]);    
+                        }
+                        if(dataRow["product_name"] != null)
+                        {
+                            clsProductListGrid.strProductName = Convert.ToString(dataRow["product_name"]);
+                        }
+                        if (dataRow["description"] != null)
+                        {
+                            clsProductListGrid.strDescription = Convert.ToString(dataRow["description"]);
+                        }
+                        if (dataRow["create_date"] != null)
+                        {
+                            clsProductListGrid.dteCreateDate = Convert.ToDateTime(dataRow["create_date"]);
+                        }
+                        if (dataRow["created_by"] != null)
+                        {
+                            tempDataTable = getDataTableBySQLQuery("SELECT username FROM users WHERE users_id = " + Convert.ToString(dataRow["created_by"]));
+                            if (tempDataTable.Rows.Count > 0)
+                            {
+                                foreach (DataRow dr in tempDataTable.Rows) { clsProductListGrid.strCreatedBy = (string)dr["username"]; }
+                            }
+                            else { clsProductListGrid.strCreatedBy = "Other"; }
+                            tempDataTable = null;
+                        }
+                        if (dataRow["price"] != null)
+                        {
+                            clsProductListGrid.dblProductPrice = Convert.ToDouble(dataRow["price"]);
+                        }
+                        if (dataRow["status"] != null)
+                        {
+                            clsProductListGrid.strStatus = Convert.ToString(dataRow["status"]) == "0" ? "Inactive" : "Active";
+                        }
+
+                        colProductListGrid.Add(clsProductListGrid);
+                        clsProductListGrid = null;
+                    }
+                }
+                else
+                {
+                    clsProductListGrid = null;
+                    colProductListGrid = null;
+                }
+
+                return colProductListGrid;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public Boolean DeleteProduct(int intProductId)
+        {
+            Boolean IsProductDeleted = false;
+            try
+            {
+                connection();
+                SqlCommand com = new SqlCommand("DeleteProduct", con);
+                com.CommandType = CommandType.StoredProcedure;
+                com.Parameters.AddWithValue("@Product_ID", intProductId);
+                con.Open();
+                int intDeleteCount = com.ExecuteNonQuery();
+                con.Close();
+
+                IsProductDeleted = (intDeleteCount > 0) ? true : false;
+
+                return IsProductDeleted;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

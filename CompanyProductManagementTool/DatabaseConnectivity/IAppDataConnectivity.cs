@@ -42,6 +42,8 @@ namespace ProductMate.DatabaseConnectivity
         public Boolean UpdateOrganisation(Organisation organisation);
         public Organisation GetOrganisationDetailsByOrganisationId(int intOrganisationId);
         public Boolean SaveProduct(Product clsProduct);
+        public List<ProductListGrid> getAllProducts();
+        public Boolean DeleteProduct(int intProductId);
 
 
         //AREA - Customer
