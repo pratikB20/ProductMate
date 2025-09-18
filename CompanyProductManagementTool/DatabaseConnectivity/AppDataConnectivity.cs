@@ -18,7 +18,7 @@ namespace ProductMate.DatabaseConnectivity
         private SqlConnection con;
         private void connection()
         {
-            string constr = "Data Source=.;Server=DESKTOP-PAUP6KE;Initial Catalog=ProductMate;Trusted_Connection=True; User ID=SERVER160;password=Pratik@1234;Integrated Security=false";
+            string constr = "Data Source=.;Server=DESKTOP-H645G35\\SQLEXPRESS;Initial Catalog=ProductMate;Trusted_Connection=True; User ID=SERVER160;password=Pratik@1234;Integrated Security=false";
             con = new SqlConnection(constr);
         }
 
