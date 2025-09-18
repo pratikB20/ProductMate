@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "H:\\CompanyProductManagementSystem\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj": {}
+    "D:\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj": {}
   },
   "projects": {
-    "H:\\CompanyProductManagementSystem\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj": {
+    "D:\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\CompanyProductManagementSystem\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj",
+        "projectUniqueName": "D:\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj",
         "projectName": "ProductMate",
-        "projectPath": "H:\\CompanyProductManagementSystem\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj",
-        "packagesPath": "C:\\Users\\prati\\.nuget\\packages\\",
-        "outputPath": "H:\\CompanyProductManagementSystem\\CompanyProductManagementSystem\\CompanyProductManagementTool\\obj\\",
+        "projectPath": "D:\\CompanyProductManagementSystem\\CompanyProductManagementTool\\ProductMate.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\CompanyProductManagementSystem\\CompanyProductManagementTool\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\prati\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -37,7 +38,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net5.0": {
@@ -70,7 +77,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -82,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.416\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
